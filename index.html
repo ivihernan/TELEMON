@@ -7,11 +7,12 @@
 		<link rel="icon" href="/img/icono.jpg" type="image/x-icon" />
 
 		<link rel="stylesheet" href="styles/index.css" />
+		<link rel="stylesheet" href="styles/shop.css" />
 	</head>
 	<body>
 		<nav class="main-nav">
 			<div class="container-nav">
-				<img class="banner" src="img/banner.png" />
+				<img class="banner" src="img/telemon_2.png" />
 				<button class="nav-btn active">Tienda</button>
 				<button class="nav-btn">Coleccion</button>
 				<button class="nav-btn">Mercado</button>
@@ -38,18 +39,21 @@
 			</div>
 		</nav>
 
+		<main>
+			<!-- Menu para comprar cartas y sobres -->
+			<section class="tab-content active" id="shop-section">
+				<h3>Tienda Diaria</h3>
 
-    <main>
+				<h3>Compra de sobres</h3>
+				<div id="loading" class="loading-spinner"> Cargando catalogo de cartas... </div>
+				<div id="packs-container" class="packs-grid"></div>
 
-      <!-- Menu para comprar cartas y sobres -->
-      <section>
-        <h2>Tienda Diaria y Compra de sobres</h2>
+				<!-- Menu de cartas diarias -->
+				<div> </div>
+			</section>
+		</main>
 
-        <!-- Menu de cartas diarias -->
-        <div>
-
-        </div>
-      </section>
-    </main>
+		<script src="/js/index.js"></script>
+		<script src="/js/shop.js"></script>
 	</body>
 </html>

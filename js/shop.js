@@ -61,8 +61,7 @@ function renderPacksGrid(packs) {
     `
 
 		packCard.querySelector('.buy-btn').addEventListener('click', () => {
-			//buyPack(set.setId)
-			console.log('comprado')
+			buyPack(set.setId)
 		})
 
 		packCard.querySelector('.view-btn').addEventListener('click', () => {
@@ -71,6 +70,66 @@ function renderPacksGrid(packs) {
 
 		container.appendChild(packCard)
 	})
+}
+
+function buyPack(setId) {
+	const setObject = allSetsData.find(set => set.setId === setId)
+	if (!setObject || !setObject.cards || setObject.cards.length === 0) {
+		alert('No hay cartas disponbles en este set, prueba con otro set. Lo sentimos!!')
+		return
+	}
+
+	const cost = setObject.packPrice || 10.0
+	if (player.money < cost) {
+		alert('No tienes suficiente dinero para comprar este pack. Prueba a vender las cartas en el mercado!!')
+		return
+	}
+
+	player.money -= cost
+	updateUI()
+
+	currentPackCards = generatePackWithRarity(setObject.cards, 5)
+	currentCardIndex = 0
+
+	document.getElementById('modal-title').textContent = `Sobre de ${setObject.setName}`
+	document.getElementById('modal-pack-img').src = setObject.logo || setObject.cards[0]?.image
+
+	document.getElementById('opening-modal').style.display = 'flex'
+}
+
+function generatePackWithRarity(cards, packSize) {
+	if (!cards || cards.length === 0) return []
+
+	//Voy a separar en tres rangos las cartas
+	//Primero por valor < 5.00 luego por 5 < x < 30.00 y luego > 30.00
+
+	const budgetCards = cards.filter(card => (card.basePrice || 0) < 5.0)
+
+	const midValueCards = cards.filter(card => (card.basePrice || 0) >= 5.0 && (card.basePrice || 0) < 30.0)
+
+	const topValueCards = cards.filter(card => (card.basePrice || 0) > 30.0 || (card.rarity || '').toLowerCase().includes('ultra') || (card.rarity || '').toLowerCase().includes('secret') || (card.rarity || '').toLowerCase().includes('illustration'))
+
+	const selectedCards = []
+
+	for (let i = 0; i < packSize; i++) {
+		const roll = Math.random() * 100
+		let pool = budgetCards
+
+		if (roll < 10 && topValueCards.length > 0) {
+			pool = topValueCards
+		} else if (roll < 40 && midValueCards.length > 0) {
+			pool = midValueCards
+		}
+
+		if (!pool || pool.length === 0) pool = cards
+
+		const randomIndex = Math.floor(Math.random() * pool.length)
+
+		selectedCards.push(pool[randomIndex])
+	}
+
+	selectedCards.sort((a, b) => (a.basePrice || 0) - (b.basePrice || 0))
+	return selectedCards
 }
 
 document.addEventListener('DOMContentLoaded', loadPacksCatalog)

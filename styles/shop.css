@@ -17,6 +17,7 @@
 	border: 1px solid;
 	transform: translateY(-6px);
 	border-color: #796240;
+	box-shadow: 7px 7px rgba(15, 15, 15, 0.83);
 }
 
 .pack-card img {
@@ -73,9 +74,20 @@
 .buy-btn {
 	border-color: #b6f500;
 	color: #b6f500;
+	transition: background-color 0.4s;
+}
+.buy-btn:hover {
+	background-color: #b6f500;
+	color: #fff;
 }
 
 .view-btn {
 	border-color: #15f5ba;
 	color: #15f5ba;
+	transition: background-color 0.4s;
+}
+
+.view-btn:hover {
+	background-color: #15f5ba;
+	color: #fff;
 }

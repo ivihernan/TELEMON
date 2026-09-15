@@ -8,6 +8,7 @@
 
 		<link rel="stylesheet" href="styles/index.css" />
 		<link rel="stylesheet" href="styles/shop.css" />
+		<link rel="stylesheet" href="styles/pack-opening.css" />
 	</head>
 	<body>
 		<nav class="main-nav">
@@ -44,7 +45,7 @@
 			<section class="tab-content active" id="shop-section">
 				<h3>Tienda Diaria</h3>
 
-				<h3>Compra de sobres</h3>
+				<h3>★ Compra de sobres</h3>
 				<div id="loading" class="loading-spinner"> Cargando catalogo de cartas... </div>
 				<div id="packs-container" class="packs-grid"></div>
 
@@ -52,6 +53,35 @@
 				<div> </div>
 			</section>
 		</main>
+
+		<!-- Aqui va el modal para el pack opening -->
+		<div id="opening-modal" class="modal">
+			<div class="modal-content">
+				<button id="close-modal-btn" class="close-btn">&times;</button>
+				<h2 id="modal-title">Abriendo Sobre...</h2>
+
+				<div id="opening-table" class="opening-table">
+					<div id="pack-wrapper" class="pack-wrapper">
+						<div id="pack-top" class="pack-top"></div>
+						<div id="pack-body" class="pack-body">
+							<img id="modal-pack-img" src="" alt="Sobre Pokémon" />
+							<button id="open-pack-btn" class="open-btn">¡ABRIR SOBRE!</button>
+						</div>
+					</div>
+
+					<div id="deck-reveal-area" class="deck-reveal-area" style="display: none">
+						<p class="click-hint">Haz clic en la carta para revelarla (<span id="cards-left-count">5</span> restantes)</p>
+						<div id="single-card-slot" class="single-card-slot"></div>
+					</div>
+
+					<div id="summary-area" class="summary-area" style="display: none">
+						<h3>¡Sobres Abiertos!</h3>
+						<div id="cards-container" class="cards-reveal-grid"></div>
+						<div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<script src="/js/index.js"></script>
 		<script src="/js/shop.js"></script>

@@ -1,0 +1,13 @@
+#opening-modal .modal-content {
+	background-color: #fff;
+	max-width: 950px;
+	width: 90%;
+	position: relative;
+}
+.opening-table {
+	min-height: 400px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}

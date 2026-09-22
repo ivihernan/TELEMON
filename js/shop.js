@@ -94,6 +94,13 @@ function buyPack(setId) {
 	document.getElementById('modal-title').textContent = `Sobre de ${setObject.setName}`
 	document.getElementById('modal-pack-img').src = setObject.logo || setObject.cards[0]?.image
 
+	/*
+	const maxIndex = Math.min(40, setObject.cards.length)
+	const randomIndex = Math.floor(Math.random() * maxIndex)
+	const randomCardImage = setObject.cards[randomIndex]?.image || setObject.cards[0]?.image || setObject.logo
+    document.getElementById('modal-pack-img').src = randomCardImage
+	*/
+
 	document.getElementById('deck-reveal-area').style.display = 'none'
 	document.getElementById('summary-area').style.display = 'none'
 	

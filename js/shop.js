@@ -94,7 +94,15 @@ function buyPack(setId) {
 	document.getElementById('modal-title').textContent = `Sobre de ${setObject.setName}`
 	document.getElementById('modal-pack-img').src = setObject.logo || setObject.cards[0]?.image
 
+	//const wrapper = document.getElementById('openinig-modal')
+	//wrapper.classList.remove('opened')
+	//wrapper.style.diplay('flex')
+	document.getElementById('deck-reveal-area').style.display = 'none'
+	document.getElementById('summary-area').style.display = 'none'
+	
 	document.getElementById('opening-modal').style.display = 'flex'
+
+	console.log("He llegado a comprar el sobre")
 }
 
 function generatePackWithRarity(cards, packSize) {

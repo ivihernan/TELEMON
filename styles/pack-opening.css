@@ -1,3 +1,7 @@
+#opening-modal {
+	display: flex;
+}
+
 #opening-modal .modal-content {
 	background-color: #fff;
 	max-width: 950px;

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function animationPackOpening() {
-    console.log('He llado hasta la animacion')
+    console.log('He llegado hasta la animacion')
     setTimeout(() => {
         startCardByCardReveal()
     }, 600)

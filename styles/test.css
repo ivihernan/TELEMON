@@ -1,0 +1,68 @@
+.packs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.pack-logo-img {
+    height: 140px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.container-price{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.pack-card{ 
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    transition: transform 1s ease;
+    padding: 1.2rem;
+    border: 1px solid transparent;
+    border-radius: 14px;
+}
+
+.pack-card:hover{ 
+    border-color: #fb86ff;
+    transform: translateY(-5px);
+}
+
+.pack-actions{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.buy-btn{
+    color: #b6f500;
+    background-color: transparent;
+    border: 1px solid #b6f500;
+    border-radius: 7px;
+    padding: 0.5rem;
+    width: 100%;
+    transition: all 1s ease;
+}
+
+.buy-btn:hover{
+    background-color: rgba(0, 115, 0, 0.6);
+}
+.view-btn{
+     color: #15f5ba;
+     background-color: transparent;
+     border: 1px solid #15f5ba;
+     border-radius: 7px;
+     padding: 0.5rem;
+     width: 100%;
+     transition: all 1s ease;
+}
+.view-btn:hover{
+    background-color: rgba(26, 126, 100, 0.5);
+
+}

@@ -1,7 +1,7 @@
 .packs-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 1.5rem;
+	grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+	gap: 3rem;
 	margin-top: 1.5rem;
 }
 
@@ -16,7 +16,7 @@
 .pack-card:hover {
 	border: 1px solid;
 	transform: translateY(-6px);
-	border-color: #796240;
+	border-color: #fb86ff;
 	box-shadow: 7px 7px rgba(15, 15, 15, 0.83);
 }
 
@@ -77,7 +77,7 @@
 	transition: background-color 0.4s;
 }
 .buy-btn:hover {
-	background-color: #b6f500;
+	background-color: rgba(0, 115, 0, 0.6);
 	color: #fff;
 }
 
@@ -88,6 +88,6 @@
 }
 
 .view-btn:hover {
-	background-color: #15f5ba;
+	background-color: rgba(26, 126, 100, 0.5);
 	color: #fff;
 }

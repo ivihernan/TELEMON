@@ -1,5 +1,5 @@
 
-#opening-modal.modal {
+#opening-modal{
     display: none;
     position: fixed;
     top: 0;
@@ -15,7 +15,7 @@
     -webkit-backdrop-filter: blur(8px);
 }
 
-#opening-modal.modal.active {
+#opening-modal.active {
     display: flex;
 }
 
@@ -67,10 +67,9 @@
 }
 
 .open-btn:hover {
-	transform: scale(1.015);
-	background-color: rgba(148, 25, 152, 0.55)
+	transform: scale(1.025);
+	background-color: rgba(148, 25, 152, 0.55);
 }
-
 
 
 #close-modal-btn {

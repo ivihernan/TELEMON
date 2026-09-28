@@ -44,7 +44,7 @@ function showNextCardInSlot() {
             <div class="atropos-rotate">
               <div class="atropos-inner">
                 <img src="${card.image}" alt="${card.name}">
-                <!-- INSIGNIA DE PRECIO DIRECTAMENTE DENTRO DE LA CARTA -->
+
                 <div class="reveal-price-badge ${isValuable ? 'valuable' : ''}">
                   $${cardPrice.toFixed(2)}
                 </div>
@@ -64,8 +64,8 @@ function showNextCardInSlot() {
 			cardElement.classList.add('flipped')
 			isFlipped = true
 
-			player.inventory.push(card)
-			updateUI()
+			//player.inventory.push(card)
+			//updateUI()
 
 			Atropos({
 				el: '.single-atropos',
@@ -89,13 +89,15 @@ function showNextCardInSlot() {
 
 	slot.appendChild(cardElement)
 }
+
+
 function showSummarySection() {
   const summaryArea = document.getElementById('summary-area')
   const container = document.getElementById('cards-container')
   const totalValue = document.getElementById('pack-total-value')
   const modalTitle = document.getElementById('modal-title')
 
-  if (modalTitle) modalTitle.textContent = '¡Sobres Abiertos!'
+  if (modalTitle) modalTitle.textContent = '¡Sobre Abierto!'
 
   container.innerHTML = ''
   let totalPackValue = 0
@@ -113,7 +115,6 @@ function showSummarySection() {
               <div class="atropos-rotate">
                 <div class="atropos-inner">
                   <img src="${card.image}" alt="${card.name}">
-                  <!-- INSIGNIA DE PRECIO DENTRO DE LA CARTA (ABAJO A LA DERECHA) -->
                   <div class="summary-card-price" data-atropos-offset="5">
                     $${cardPrice.toFixed(2)}
                   </div>
@@ -123,7 +124,10 @@ function showSummarySection() {
         </div>
     `
 
-    cardElement.addEventListener('click', () => openCardZoomModal(card))
+    cardElement.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openCardZoomModal(card);
+    } )
     container.appendChild(cardElement)
 
     // Inicializar Atropos para cada carta del resumen
@@ -151,6 +155,28 @@ function closePackModal() {
         modal.style.display = '' 
         document.body.style.overflow = 'auto'
     }
+    resetPackModalState();
+}
+
+
+
+function resetPackModalState() {
+    const packWrapper = document.getElementById('pack-wrapper');
+    const revealArea = document.getElementById('deck-reveal-area');
+    const summaryArea = document.getElementById('summary-area');
+    const modalTitle = document.getElementById('modal-title');
+    const slot = document.getElementById('single-card-slot');
+    const container = document.getElementById('cards-container');
+
+
+    if (packWrapper) packWrapper.style.display = 'block';
+    if (revealArea) revealArea.style.display = 'none';
+    if (summaryArea) summaryArea.style.display = 'none';
+
+
+    if (modalTitle) modalTitle.textContent = 'Abriendo Sobre...';
+    if (slot) slot.innerHTML = '';
+    if (container) container.innerHTML = '';
 }
 
 

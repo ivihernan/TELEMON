@@ -6,9 +6,12 @@
 		<title>TELEMON</title>
 		<link rel="icon" href="/img/icono.jpg" type="image/x-icon" />
 
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/atropos@2/atropos.css" />
+
 		<link rel="stylesheet" href="styles/index.css" />
 		<link rel="stylesheet" href="styles/shop.css" />
 		<link rel="stylesheet" href="styles/pack-opening.css" />
+		<link rel="stylesheet" href="styles/atropos.css" />
 
 	</head>
 	<body>
@@ -75,14 +78,40 @@
 					</div>
 
 					<div id="summary-area" class="summary-area" style="display: none">
-						<h3>¡Sobres Abiertos!</h3>
+						<h3>¡Sobre Abierto!</h3>
 						<div id="cards-container" class="cards-reveal-grid"></div>
 						<div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong></div>
 					</div>
 				</div>
 			</div>
 		</div>
-		 
+
+		<!-- Modal para ver el album de cada coleccion -->
+
+		<div id="view-set-modal" class="modal">
+			<div class="modal-content modal-album">
+				<div id="set-cards-grid" class="set-cards-grid"></div>
+			</div>
+		</div>
+
+
+		<!-- Modal para ver la carta solo con atropos -->
+		<div id="card-zoom-modal" class="modal card-zoom-modal">
+			<div class="card-zoom-content">
+				<div class="atropos card-zoom-atropos">
+					<div class="atropos-scale">
+						<div class="atropos-rotate">
+							<div class="atropos-inner">
+								<img id="zoom-card-img" src="" alt="Carta Pokémon" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script> 
 
 		<script src="/js/index.js"></script>
 		<script src="/js/shop.js"></script>

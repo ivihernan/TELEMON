@@ -86,10 +86,11 @@ function buyPack(setId) {
 	}
 
 	player.money -= cost
-	updateUI()
-
-	currentPackCards = generatePackWithRarity(setObject.cards, 5)
+	currentPackCards = generatePackWithRarity(setObject.cards,5)
 	currentCardIndex = 0
+
+	player.inventory.push(...currentPackCards)
+	updateUI()
 
 	document.getElementById('modal-title').textContent = `Sobre de ${setObject.setName}`
 	document.getElementById('modal-pack-img').src = setObject.logo || setObject.cards[0]?.image

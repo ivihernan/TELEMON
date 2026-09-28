@@ -1,42 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('open-pack-btn')?.addEventListener('click', startCardByCardReveal)
+
 })
 
-function animationPackOpening() {
-    console.log('He llegado hasta la animacion')
-    setTimeout(() => {
-        startCardByCardReveal()
-    }, 600)
-}
-
 function startCardByCardReveal() {
-    console.log("He llegado hasta la primera carta")
+
+    const packWrapper = document.getElementById('pack-wrapper')
+    if(packWrapper) packWrapper.style.display = 'none'
+
     const revealArea = document.getElementById('deck-reveal-area')
     revealArea.style.display = 'flex'
     showNextCardInSlot()
 }
 
 function showNextCardInSlot() {
-    const slot = document.getElementById('single-card-slot')
-    const leftCountSpan = document.getElementById('cards-left-count')
-    
-    if (currentCardIndex >= currentPackCards.length) {
-        document.getElementById('deck-reveal-area').style.display = 'none'
-        showSummarySection()
-        return
-    }
+	const slot = document.getElementById('single-card-slot')
+	const leftCountSpan = document.getElementById('cards-left-count')
 
-    const card = currentPackCards[currentCardIndex]
-    leftCountSpan.textContent = currentPackCards.length - currentCardIndex
-    slot.innerHTML = ''
+	if (currentCardIndex >= currentPackCards.length) {
+		document.getElementById('deck-reveal-area').style.display = 'none'
+		showSummarySection()
+		return
+	}
 
-    const cardPrice = card.basePrice || 0
-    const isValuable = cardPrice >= 40.0
-    const isHolo = isValuable || (card.rarity && (card.rarity.includes('Ultra') || card.rarity.includes('Hyper') || card.rarity.includes('Ilustration') || card.rarity.includes('Secret')))
+	const card = currentPackCards[currentCardIndex]
+	leftCountSpan.textContent = currentPackCards.length - currentCardIndex
+	slot.innerHTML = ''
 
-    const cardElement = document.createElement('div')
-    cardElement.className = 'card-flip'
-    cardElement.innerHTML = `
+	const cardPrice = card.basePrice || 0
+	const isValuable = cardPrice >= 40.0
+	const isHolo = isValuable || (card.rarity && (card.rarity.includes('Ultra') || card.rarity.includes('Hyper') || card.rarity.includes('Illustration') || card.rarity.includes('Secret')))
+
+	const cardElement = document.createElement('div')
+	cardElement.className = 'card-flip'
+	cardElement.innerHTML = `
     <div class="card-inner">
       <div class="card-front real-card-back">
         <img src="https://images.pokemontcg.io/cardback.png" alt="Dorso Pokémon TCG">
@@ -47,7 +44,7 @@ function showNextCardInSlot() {
             <div class="atropos-rotate">
               <div class="atropos-inner">
                 <img src="${card.image}" alt="${card.name}">
-               
+                <!-- INSIGNIA DE PRECIO DIRECTAMENTE DENTRO DE LA CARTA -->
                 <div class="reveal-price-badge ${isValuable ? 'valuable' : ''}">
                   $${cardPrice.toFixed(2)}
                 </div>
@@ -57,41 +54,94 @@ function showNextCardInSlot() {
         </div>
       </div>
     </div>
-    `
+  `
 
-    let isFlipped = false
-    
-    cardElement.addEventListener('click', () => {
-        if (!isFlipped) {
-            //Esto primero tengo que  ver que hago con el primer click
-            cardElement.classList.add('flipped')
-            isFlipped = true
+	let isFlipped = false
 
-            player.invetory.push(card)
-            updateUI()
+	cardElement.addEventListener('click', () => {
+		if (!isFlipped) {
+			// 1er Clic: Dar la vuelta
+			cardElement.classList.add('flipped')
+			isFlipped = true
 
-            Atropos({
+			player.inventory.push(card)
+			updateUI()
+
+			Atropos({
 				el: '.single-atropos',
 				activeOffset: isValuable ? 60 : 40,
 				shadow: false,
 				glare: true,
 				maxGlare: isValuable ? 1.0 : isHolo ? 0.7 : 0.4,
 			})
-        } else{
-            //El segundo click lo hago aqui
-            cardElement.style.transition = 'transform 0.4 ease-in, opacity 0.35s ease-in'
-            cardElement.style.transform = 'translateX(450px) rotate(25deg)'
-            cardElement.style.opacity = '0'
+		} else {
+			// 2do Clic: Descarte y siguiente carta
+			cardElement.style.transition = 'transform 0.4s ease-in, opacity 0.35s ease-in'
+			cardElement.style.transform = 'translateX(450px) rotate(25deg)'
+			cardElement.style.opacity = '0'
 
-            setTimeout(() => {
-                currentCardIndex++
-                showNextCardInSlot()
-            },250)
-        }
-    })
+			setTimeout(() => {
+				currentCardIndex++
+				showNextCardInSlot()
+			}, 350)
+		}
+	})
 
-    slot.appendChild(cardElement)
+	slot.appendChild(cardElement)
 }
+function showSummarySection() {
+  const summaryArea = document.getElementById('summary-area')
+  const container = document.getElementById('cards-container')
+  const totalValue = document.getElementById('pack-total-value')
+  const modalTitle = document.getElementById('modal-title')
+
+  if (modalTitle) modalTitle.textContent = '¡Sobres Abiertos!'
+
+  container.innerHTML = ''
+  let totalPackValue = 0
+
+  currentPackCards.forEach((card, index) => {
+    const cardPrice = card.basePrice || 0
+    totalPackValue += cardPrice
+    
+    const cardElement = document.createElement('div')
+    cardElement.className = 'set-card-item'
+
+    cardElement.innerHTML = `
+        <div class="atropos summary-atropos-${index}">
+            <div class="atropos-scale">
+              <div class="atropos-rotate">
+                <div class="atropos-inner">
+                  <img src="${card.image}" alt="${card.name}">
+                  <!-- INSIGNIA DE PRECIO DENTRO DE LA CARTA (ABAJO A LA DERECHA) -->
+                  <div class="summary-card-price" data-atropos-offset="5">
+                    $${cardPrice.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    `
+
+    cardElement.addEventListener('click', () => openCardZoomModal(card))
+    container.appendChild(cardElement)
+
+    // Inicializar Atropos para cada carta del resumen
+    setTimeout(() => {
+      Atropos({
+        el: `.summary-atropos-${index}`,
+        activeOffset: 20,
+        shadow: false,
+        glare: true,
+        maxGlare: 0.4,
+      })
+    }, 50)
+  })
+
+  totalValue.textContent = `$${totalPackValue.toFixed(2)}`
+  summaryArea.style.display = 'flex'
+}
+
 
 
 function closePackModal() {

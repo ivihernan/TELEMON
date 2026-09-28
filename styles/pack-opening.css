@@ -71,6 +71,108 @@
 	background-color: rgba(148, 25, 152, 0.55);
 }
 
+/* Todo los estilos para darle giro a las cartas y poder ver las siguientes de manera bonita */
+
+.click-hint{
+    font-family: 'Orbitron', sans-serif;
+}
+.deck-reveal-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.single-card-slot {
+    width: 220px;
+    height: 308px;
+    margin: 0 auto;
+    position: relative;
+    perspective: 1000px; 
+}
+
+.card-flip {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.card-flip.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.card-front img,
+.card-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reveal-price-badge {
+	position: absolute;
+	bottom: 12px;
+	right: 12px;
+	background: rgba(18, 19, 28, 0.95);
+	border: 1px solid #3d425a;
+	color: #fb86ff;
+	font-weight: bold;
+	font-size: 0.9rem;
+	padding: 4px 10px;
+	border-radius: 20px;
+	z-index: 50;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+	pointer-events: none;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.reveal-price-badge.valuable {
+	background: linear-gradient(135deg, #ffcb05, #e3350d);
+	color: #12131c;
+	border: none;
+	font-weight: 800;
+	animation: pulseBadge 1.2s infinite alternate;
+
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+/* Para cuando ya hayamos abierto el sobre ahora mostramos las 5 cartas */
+
+
+
+
+/* Todo esto es para cerrar el modal */
 
 #close-modal-btn {
     position: absolute;
@@ -99,3 +201,16 @@
         transform: scale(1);
     }
 }
+
+
+@keyframes pulseBadge {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(1.08);
+	}
+}
+
+
+/* Poder ver todas las cartas despues de abrir el sobre */

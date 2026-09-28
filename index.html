@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="styles/shop.css" />
 		<link rel="stylesheet" href="styles/pack-opening.css" />
 		<link rel="stylesheet" href="styles/atropos.css" />
+		<link rel="stylesheet" href="styles/album.css" />
 
 	</head>
 	<body>
@@ -87,9 +88,11 @@
 		</div>
 
 		<!-- Modal para ver el album de cada coleccion -->
-
 		<div id="view-set-modal" class="modal">
 			<div class="modal-content modal-album">
+				<button id="close-set-modal-btn" class="close-btn">&times;</button>
+				<h2 id="modal-title">Expansion</h2>
+				<p id="modal-subtitle">Filtrar</p>
 				<div id="set-cards-grid" class="set-cards-grid"></div>
 			</div>
 		</div>
@@ -116,5 +119,6 @@
 		<script src="/js/index.js"></script>
 		<script src="/js/shop.js"></script>
 		<script src="/js/pack-opening.js"></script>
+		<script src="/js/album.js"></script>
 	</body>
 </html>

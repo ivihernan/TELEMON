@@ -247,7 +247,7 @@
 
 /* Todo esto es para cerrar el modal */
 
-#close-modal-btn {
+.close-btn {
     position: absolute;
     top: 15px;
     right: 20px;
@@ -260,7 +260,7 @@
     z-index: 10;
 }
 
-#close-modal-btn:hover {
+.close-btn:hover {
     color: #ffffff;
 }
 
@@ -284,6 +284,3 @@
 		transform: scale(1.08);
 	}
 }
-
-
-/* Poder ver todas las cartas despues de abrir el sobre */

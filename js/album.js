@@ -1,4 +1,5 @@
 function openAlbumModal(setId){
+      console.log(setId)
     const modal = document.getElementById('view-set-modal')
     if(!modal) return
     const titleElement = document.getElementById('set-modal-title')

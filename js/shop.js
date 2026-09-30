@@ -90,6 +90,7 @@ function buyPack(setId) {
 	currentCardIndex = 0
 
 	player.inventory.push(...currentPackCards)
+	//console.log(player.inventory)
 	updateUI()
 
 	document.getElementById('modal-title').textContent = `Sobre de ${setObject.setName}`

@@ -58,6 +58,7 @@ body {
 .container-nav {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	gap: 1rem;
 	padding: 0.75rem;
 }
@@ -167,3 +168,7 @@ main {
 	color: #9da4bd;
 	margin-top: 2rem;
 }
+
+
+
+

@@ -19,10 +19,12 @@
 		<nav class="main-nav">
 			<div class="container-nav">
 				<img class="banner" src="img/telemon_2.png" />
-				<button class="nav-btn active">Tienda</button>
-				<button class="nav-btn">Coleccion</button>
-				<button class="nav-btn">Mercado</button>
-				<button class="nav-btn">Upgrade</button>
+				<div id="nav-menu" class="container-btn">
+					<button class="nav-btn active" data-tab="shop-section">Tienda</button>
+					<button class="nav-btn" data-tab="collection-section">Coleccion</button>
+					<button class="nav-btn" data-tab="market-section">Mercado</button>
+					<button class="nav-btn" data-tab="upgrade-section">Upgrade</button>
+				</div>
 			</div>
 			<div class="player">
 				<!-- <button>Iniciar Sesion</button> -->
@@ -57,7 +59,26 @@
 				<!-- Menu de cartas diarias -->
 				<div> </div>
 			</section>
+
+			<section class="tab-content" id="collection-section">
+				<div></div>
+				<button id="primera">PUlsa aqui</button>
+			</section>
+
+			<section class="tab-content" id="market-section">
+				<h3>Mercado de Cartas</h3>
+				<p>Próximamente...</p>
+			</section>
+
+			<section class="tab-content" id="upgrade-section">
+				<h3>Mejoras y Upgrades</h3>
+				<p>Próximamente...</p>
+			</section>
 		</main>
+
+		<footer>
+
+		</footer>
 
 		<!-- Aqui va el modal para el pack opening --> 
 		<div id="opening-modal" class="modal">
@@ -120,5 +141,7 @@
 		<script src="/js/shop.js"></script>
 		<script src="/js/pack-opening.js"></script>
 		<script src="/js/album.js"></script>
+		<script src="/js/navegacion.js"></script>
+		<script src="/js/collection.js"></script>
 	</body>
 </html>

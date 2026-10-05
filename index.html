@@ -1,147 +1,168 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>TELEMON</title>
-		<link rel="icon" href="/img/icono.jpg" type="image/x-icon" />
 
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/atropos@2/atropos.css" />
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>TELEMON</title>
+	<link rel="icon" href="/img/icono.jpg" type="image/x-icon" />
 
-		<link rel="stylesheet" href="styles/index.css" />
-		<link rel="stylesheet" href="styles/shop.css" />
-		<link rel="stylesheet" href="styles/pack-opening.css" />
-		<link rel="stylesheet" href="styles/atropos.css" />
-		<link rel="stylesheet" href="styles/album.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/atropos@2/atropos.css" />
 
-	</head>
-	<body>
-		<nav class="main-nav">
-			<div class="container-nav">
-				<img class="banner" src="img/telemon_2.png" />
-				<div id="nav-menu" class="container-btn">
-					<button class="nav-btn active" data-tab="shop-section">Tienda</button>
-					<button class="nav-btn" data-tab="collection-section">Coleccion</button>
-					<button class="nav-btn" data-tab="market-section">Mercado</button>
-					<button class="nav-btn" data-tab="upgrade-section">Upgrade</button>
-				</div>
+	<link rel="stylesheet" href="styles/index.css" />
+	<link rel="stylesheet" href="styles/shop.css" />
+	<link rel="stylesheet" href="styles/pack-opening.css" />
+	<link rel="stylesheet" href="styles/atropos.css" />
+	<link rel="stylesheet" href="styles/album.css" />
+	<link rel="stylesheet" href="styles/daily-shop.css" />
+
+</head>
+
+<body>
+	<nav class="main-nav">
+		<div class="container-nav">
+			<img class="banner" src="img/telemon_2.png" />
+			<div id="nav-menu" class="container-btn">
+				<button class="nav-btn active" data-tab="shop-section">Tienda</button>
+				<button class="nav-btn" data-tab="collection-section">Coleccion</button>
+				<button class="nav-btn" data-tab="market-section">Mercado</button>
+				<button class="nav-btn" data-tab="upgrade-section">Upgrade</button>
 			</div>
-			<div class="player">
-				<!-- <button>Iniciar Sesion</button> -->
-				<div class="player-stats">
-					<div class="player-inventory">
-						<img src="img/cards.png" />
-						<div class="container-money">
-							<p id="collection-value">$0.00</p>
-							<p class="player-inventory-value">Inventario </p>
-						</div>
-					</div>
-					<div class="player-saldo">
-						<img src="img/pocket.png" />
-						<div class="container-pocket">
-							<p id="player-money">$100.00</p>
-							<p class="saldo-texto">Saldo en la cartera</p>
-						</div>
+		</div>
+		<div class="player">
+			<!-- <button>Iniciar Sesion</button> -->
+			<div class="player-stats">
+				<div class="player-inventory">
+					<img src="img/cards.png" />
+					<div class="container-money">
+						<p id="collection-value">$0.00</p>
+						<p class="player-inventory-value">Inventario </p>
 					</div>
 				</div>
-			</div>
-		</nav>
-
-		<main>
-			<!-- Menu para comprar cartas y sobres -->
-			<section class="tab-content active" id="shop-section">
-				<h3>Tienda Diaria</h3>
-
-				<h3>★ Compra de sobres</h3>
-				<div id="loading" class="loading-spinner"> Cargando catalogo de cartas... </div>
-				<div id="packs-container" class="packs-grid"></div>
-
-				<!-- Menu de cartas diarias -->
-				<div> </div>
-			</section>
-
-			<section class="tab-content" id="collection-section">
-				<div></div>
-				<button id="primera">PUlsa aqui</button>
-			</section>
-
-			<section class="tab-content" id="market-section">
-				<h3>Mercado de Cartas</h3>
-				<p>Próximamente...</p>
-			</section>
-
-			<section class="tab-content" id="upgrade-section">
-				<h3>Mejoras y Upgrades</h3>
-				<p>Próximamente...</p>
-			</section>
-		</main>
-
-		<footer>
-
-		</footer>
-
-		<!-- Aqui va el modal para el pack opening --> 
-		<div id="opening-modal" class="modal">
-			<div class="modal-content">
-				<button id="close-modal-btn" class="close-btn">&times;</button>
-				<h2 id="modal-title">Abriendo Sobre...</h2>
-
-				<div id="opening-table" class="opening-table">
-					<div id="pack-wrapper" class="pack-wrapper">
-						<div id="pack-body" class="pack-body">
-							<img id="modal-pack-img" src="" alt="Sobre Pokémon" />
-							<button id="open-pack-btn" class="open-btn">¡ABRIR SOBRE!</button>
-						</div>
-					</div>
-
-					<div id="deck-reveal-area" class="deck-reveal-area" style="display: none">
-						<p class="click-hint">Haz clic en la carta para revelarla (<span id="cards-left-count">5</span> restantes)</p>
-						<div id="single-card-slot" class="single-card-slot"></div>
-					</div>
-
-					<div id="summary-area" class="summary-area" style="display: none">
-						<h3>¡Sobre Abierto!</h3>
-						<div id="cards-container" class="cards-reveal-grid"></div>
-						<div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong></div>
+				<div class="player-saldo">
+					<img src="img/pocket.png" />
+					<div class="container-pocket">
+						<p id="player-money">$100.00</p>
+						<p class="saldo-texto">Saldo en la cartera</p>
 					</div>
 				</div>
 			</div>
 		</div>
+	</nav>
 
-		<!-- Modal para ver el album de cada coleccion -->
-		<div id="view-set-modal" class="modal">
-			<div class="modal-content modal-album">
-				<button id="close-set-modal-btn" class="close-btn">&times;</button>
-				<h2 id="modal-title">Expansion</h2>
-				<p id="modal-subtitle">Filtrar</p>
-				<div id="set-cards-grid" class="set-cards-grid"></div>
+	<main>
+		<!-- Menu para comprar cartas y sobres -->
+		<section class="tab-content active" id="shop-section">
+			<h3>Tienda Diaria</h3>
+			<div class="daily-shop-container">
+				<div class="daily-shop-header">
+					<div>
+						<h3>Ofertas del dia</h3>
+						<!-- <p> Cartas exclusivas</p> -->
+					</div>
+					<div class="daily-shop-timer">
+						<span>Proximo refresco en: <strong id="daily-timer">23:59:59</strong></span>
+						<button id="reroll-shop-btn" class="reroll-shop-btn">Refrescar tienda ($5.00)</button>
+					</div>
+				</div>
+
+				<div id="daily-cards-grid" class="set-cards-grid"></div>
+			</div>
+
+			<h3>★ Compra de sobres</h3>
+			<div id="loading" class="loading-spinner"> Cargando catalogo de cartas... </div>
+			<div id="packs-container" class="packs-grid"></div>
+
+			<!-- Menu de cartas diarias -->
+			<div> </div>
+		</section>
+
+		<section class="tab-content" id="collection-section">
+			<div></div>
+			<button id="primera">PUlsa aqui</button>
+		</section>
+
+		<section class="tab-content" id="market-section">
+			<h3>Mercado de Cartas</h3>
+			<p>Próximamente...</p>
+		</section>
+
+		<section class="tab-content" id="upgrade-section">
+			<h3>Mejoras y Upgrades</h3>
+			<p>Próximamente...</p>
+		</section>
+	</main>
+
+	<footer>
+
+	</footer>
+
+	<!-- Aqui va el modal para el pack opening -->
+	<div id="opening-modal" class="modal">
+		<div class="modal-content">
+			<button id="close-modal-btn" class="close-btn">&times;</button>
+			<h2 id="modal-title">Abriendo Sobre...</h2>
+
+			<div id="opening-table" class="opening-table">
+				<div id="pack-wrapper" class="pack-wrapper">
+					<div id="pack-body" class="pack-body">
+						<img id="modal-pack-img" src="" alt="Sobre Pokémon" />
+						<button id="open-pack-btn" class="open-btn">¡ABRIR SOBRE!</button>
+					</div>
+				</div>
+
+				<div id="deck-reveal-area" class="deck-reveal-area" style="display: none">
+					<p class="click-hint">Haz clic en la carta para revelarla (<span id="cards-left-count">5</span>
+						restantes)</p>
+					<div id="single-card-slot" class="single-card-slot"></div>
+				</div>
+
+				<div id="summary-area" class="summary-area" style="display: none">
+					<h3>¡Sobre Abierto!</h3>
+					<div id="cards-container" class="cards-reveal-grid"></div>
+					<div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong>
+					</div>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Modal para ver el album de cada coleccion -->
+	<div id="view-set-modal" class="modal">
+		<div class="modal-content modal-album">
+			<button id="close-set-modal-btn" class="close-btn">&times;</button>
+			<h2 id="modal-title">Expansion</h2>
+			<p id="modal-subtitle">Filtrar</p>
+			<div id="set-cards-grid" class="set-cards-grid"></div>
+		</div>
+	</div>
 
 
-		<!-- Modal para ver la carta solo con atropos -->
-		<div id="card-zoom-modal" class="modal card-zoom-modal">
-			<div class="card-zoom-content">
-				<div class="atropos card-zoom-atropos">
-					<div class="atropos-scale">
-						<div class="atropos-rotate">
-							<div class="atropos-inner">
-								<img id="zoom-card-img" src="" alt="Carta Pokémon" />
-							</div>
+	<!-- Modal para ver la carta solo con atropos -->
+	<div id="card-zoom-modal" class="modal card-zoom-modal">
+		<div class="card-zoom-content">
+			<div class="atropos card-zoom-atropos">
+				<div class="atropos-scale">
+					<div class="atropos-rotate">
+						<div class="atropos-inner">
+							<img id="zoom-card-img" src="" alt="Carta Pokémon" />
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
 
-		<script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script> 
+	<script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script>
 
-		<script src="/js/index.js"></script>
-		<script src="/js/shop.js"></script>
-		<script src="/js/pack-opening.js"></script>
-		<script src="/js/album.js"></script>
-		<script src="/js/navegacion.js"></script>
-		<script src="/js/collection.js"></script>
-	</body>
+	<script src="/js/index.js"></script>
+	<script src="/js/shop.js"></script>
+	<script src="/js/pack-opening.js"></script>
+	<script src="/js/album.js"></script>
+	<script src="/js/navegacion.js"></script>
+	<script src="/js/collection.js"></script>
+	<script src="/js/daily-shop.js"></script>
+</body>
+
 </html>

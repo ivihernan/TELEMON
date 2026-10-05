@@ -1,29 +1,57 @@
 function openAlbumModal(setId){
-      console.log(setId)
     const modal = document.getElementById('view-set-modal')
     if(!modal) return
-    const titleElement = document.getElementById('set-modal-title')
+    const titleElement = document.getElementById('album-modal-title') 
     
-    if(titleElement) titleElement.textContent = setId.setName 
+    if(titleElement) titleElement.textContent = `Expansion ${setId.setName|| 'Unknown'}`
     currentInspectedCards = setId.cards || []
+
+    resetAlbumFilters()
 
     modal.classList.add('active')
     modal.style.display = 'flex'
     document.body.style.overflow = 'hidden'
 
-    filterAlbumCards(currentInspectedCards)
+    applyAlbumFilters()
 }
+
+
+function applyAlbumFilters() {
+    if (!currentInspectedCards) return
+
+    const selectedType = document.getElementById('filter-type')?.value || 'all'
+    
+    const minInput = document.getElementById('filter-min-price')?.value
+    const maxInput = document.getElementById('filter-max-price')?.value
+    
+    const minPrice = minInput !== '' ? parseFloat(minInput) : 0
+    const maxPrice = maxInput !== '' ? parseFloat(maxInput) : Infinity
+
+    const filteredCards = currentInspectedCards.filter(card => {
+        const cardPrice = card.basePrice || 0
+        const cardType = card.type || 'Incoloro'
+
+        const matchesType = selectedType === 'all' || cardType.toLowerCase() === selectedType.toLowerCase()
+        const matchesPrice = cardPrice >= minPrice && cardPrice <= maxPrice
+        
+        return matchesType && matchesPrice
+    })
+
+    filterAlbumCards(filteredCards)
+}
+
 
 function filterAlbumCards(cardsList) {
     const grid = document.getElementById('set-cards-grid')
     if(!grid || !cardsList) return
 
-    //console.log(cardsList[0].basePrice)
-
-    
-    const isValuable = cardsList.basePrice >= 40.0
-
     grid.innerHTML = ''
+
+    if (!cardsList || cardsList.length === 0) {
+        grid.innerHTML = '<p class="no-cards-msg" style="grid-column: 1/-1; text-align: center; color: #9da4bd; padding: 2rem;">No se encontraron cartas con esos filtros.</p>'
+        return
+    }
+    //console.log(cardsList[0].basePrice)
 
     cardsList.forEach((card, index) => {
         const cardItem = document.createElement('div')
@@ -54,6 +82,18 @@ function filterAlbumCards(cardsList) {
     })
 }
 
+
+function resetAlbumFilters() {
+    const typeSelect = document.getElementById('filter-type')
+    const minInput = document.getElementById('filter-min-price')
+    const maxInput = document.getElementById('filter-max-price')
+
+    if (typeSelect) typeSelect.value = 'all'
+    if (minInput) minInput.value = ''
+    if (maxInput) maxInput.value = ''
+}
+
+
 function closeAlbumModal() {
     const modal = document.getElementById('view-set-modal')
     if (modal) {
@@ -77,3 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 })
+
+document.getElementById('filter-type')?.addEventListener('change', applyAlbumFilters)
+document.getElementById('filter-min-price')?.addEventListener('input', applyAlbumFilters)
+document.getElementById('filter-max-price')?.addEventListener('input', applyAlbumFilters)

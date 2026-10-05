@@ -13,7 +13,12 @@
     -webkit-backdrop-filter: blur(8px);
 }
 
-#modal-subtitle {
+#album-modal-title{
+    color: #9da4bd;
+	font-family: 'Orbitron', sans-serif;
+}
+
+#album-modal-subtitle {
     font-family: 'Orbitron', sans-serif;
 }
 

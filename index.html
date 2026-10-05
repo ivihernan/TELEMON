@@ -131,8 +131,29 @@
 	<div id="view-set-modal" class="modal">
 		<div class="modal-content modal-album">
 			<button id="close-set-modal-btn" class="close-btn">&times;</button>
-			<h2 id="modal-title">Expansion</h2>
-			<p id="modal-subtitle">Filtrar</p>
+			<h2 id="album-modal-title">Expansion</h2>
+			<p id="album-modal-subtitle">Filtrar</p>
+			<!-- Aqui meto todos los filtros que quiera poner -->
+			 <div class="album-filters">
+				<select id="filter-type">
+					<option value="all">Todos los Tipos</option>
+						<option value="Fuego">Fuego</option>
+						<option value="Agua">Agua</option>
+						<option value="Planta">Planta</option>
+						<option value="Eléctrico">Eléctrico</option>
+						<option value="Psíquico">Psíquico</option>
+						<option value="Lucha">Lucha</option>
+						<option value="Oscuro">Oscuro</option>
+						<option value="Metal">Metal</option>
+						<option value="Dragón">Dragón</option>
+						<option value="Incoloro">Incoloro</option>
+					</select>
+					<div class="price-range-group">
+						<input type="number" id="filter-min-price" placeholder="Min $" min="0" step="0.5" />
+						<span>-</span>
+						<input type="number" id="filter-max-price" placeholder="Max $" min="0" step="0.5" />
+					</div>
+			 </div>
 			<div id="set-cards-grid" class="set-cards-grid"></div>
 		</div>
 	</div>

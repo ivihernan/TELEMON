@@ -1,0 +1,8 @@
+.collection-card-item{
+    width: 150px;
+    height: 210px;
+    position: relative;
+    border-radius: 10px;
+    overflow: visible;
+    cursor: pointer;
+}

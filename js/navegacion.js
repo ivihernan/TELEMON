@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const navMenu = document.getElementById('nav-menu');
             if (navMenu) navMenu.classList.remove('open');
 
+
+            if (targetTabId === 'collection-section' && typeof showCollection === 'function') {
+                showCollection();
+            }
             
             if (typeof updateUI === 'function') {
                 updateUI();

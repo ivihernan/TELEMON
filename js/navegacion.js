@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. GESTIÓN DE PESTAÑAS (Navegación)
+ 
     const navButtons = document.querySelectorAll('.nav-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetTabId === 'collection-section' && typeof showCollection === 'function') {
                 showCollection();
             }
+
+            if(targetTabId === 'market-section' && typeof initMarket === 'function'){
+                initMarket()
+            }
+
             
             if (typeof updateUI === 'function') {
                 updateUI();

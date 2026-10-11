@@ -51,7 +51,32 @@
 }
 
 .album-filters {
-background-color: transparent;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem; 
+}
 
+.album-filters select {
+    background-color: rgba(216, 187, 242, 0.6);
+    border-radius: 20px;
+    padding: 0.25rem;
+    text-align: center;
+    color: #000000;
+    font-family: 'Orbitron', sans-serif;
+}
+.price-range-group input {
+    background-color: rgba(216, 187, 242, 0.6);
+    border-radius: 20px;
+    padding: 0.25rem;
+    text-align: center;
+    border: none; /* <--- Agrega esta línea para quitar los bordes nativos */
+    outline: none;
 
+}
+
+.price-range-group input::placeholder {
+    color: #000000; /* Color para "Min $" y "Max $" */
+    font-family: 'Orbitron', sans-serif;
 }

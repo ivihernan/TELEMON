@@ -14,15 +14,36 @@ function showCollection() {
         return;
     }
 
-    player.inventory.forEach((card, index) => {
+    const cardCount = []
+    const uniqueCards = []
+
+    player.inventory.forEach((card) => {
+        const identifier = card.id || card.name
+
+        if(!cardCount[identifier]) {
+            cardCount[identifier] = 0
+            uniqueCards.push(card)
+        }
+        cardCount[identifier]++
+    })
+
+    uniqueCards.forEach((card, index) => {
+
+        const identifier = card.id || card.name
+        const count = cardCount[identifier]
+
         const cardItem = document.createElement('div');
         cardItem.className = 'collection-card-item';
+
+
+        const quantityBadgeHTML = count > 1 ? `<div class="quantity-badge" data-atropos-offset="5">x${count}</div>` : '';
 
         cardItem.innerHTML = `
            <div class="atropos collection-atropos-${index}">
                 <div class="atropos-scale">
                     <div class="atropos-rotate">
                         <div class="atropos-inner">
+                            ${quantityBadgeHTML}
                             <img src="${card.image}" alt="${card.name}">
                             <div class="reveal-price-badge ${(card.basePrice || 0) >= 40.0 ? 'valuable' : ''}">
                                 $${(card.basePrice || 0).toFixed(2)}

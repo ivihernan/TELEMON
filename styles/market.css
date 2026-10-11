@@ -1,0 +1,77 @@
+.tab-content{
+    min-height: 65vh;
+    font-family:'Orbitron'
+}
+
+.tab-content h2{ 
+    font-size: 1.2rem;
+}
+
+.market-desc{
+    margin: 0.5rem 0;
+    font-size: 0.7rem;
+}
+.buyer-grid { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.2rem;
+}
+
+.buyer-card {
+    border: 1px solid #fb86ff;
+    border-radius: 1.2rem;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out
+}
+
+.buyer-card:hover {
+    transform: translateY(-3px);
+    border-color: aqua;
+}
+
+.buyer-card:hover .buyer-personality-tag{
+    color: aqua;
+}
+
+.buyer-avatar {
+	background: #12131c;
+	width: 5rem;
+	height: 5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 0.8rem;
+	border: 2px solid #3d425a;
+    border-radius: 1.2rem;
+    overflow: hidden;
+}
+
+.buyer-avatar-img {
+    width: 6rem;
+    height: 6rem;
+}
+
+.buyer-card h3 {
+    font-size: 1.1rem;
+}
+
+.buyer-personality-tag{
+    font-size: 0.7rem;
+    color: #fb86ff;
+    margin: 0.6rem 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.buyer-personality-desc{
+    margin: 0.6rem 0;
+    font-size: 0.6rem;
+    color: #6f6f72
+}
+

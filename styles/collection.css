@@ -1,8 +1,68 @@
-.collection-card-item{
-    width: 150px;
-    height: 210px;
+#collection-section {
+    min-height: 70vh;
+}
+
+#collection-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.collection-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+    align-items: center;
+}
+
+.collection-card-item {
+    width: 100%;
     position: relative;
-    border-radius: 10px;
-    overflow: visible;
     cursor: pointer;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+
+.collection-card-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 16px;
+}
+
+.quantity-badge {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    background: linear-gradient(135deg, #FF3366, #FF9933);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    z-index: 20;
+    pointer-events: none; 
+    font-family: 'Orbitron', sans-serif;
+
+}
+
+.empty-msg {
+    grid-column: 1 / -1;
+    font-size: 1.5rem;
+    color: #9da4bd;
+    font-family: 'Orbitron', sans-serif;
+}
+
+@media (max-width: 600px) {
+    .collection-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .quantity-badge {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
 }

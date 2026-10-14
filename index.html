@@ -17,11 +17,29 @@
 	<link rel="stylesheet" href="styles/daily-shop.css" />
 	<link rel="stylesheet" href="styles/collection.css" />
 	<link rel="stylesheet" href="styles/market.css" />
+	<link rel="stylesheet" href="styles/+18.css" />
 
 
 </head>
 
 <body>
+
+	<!-- ANtes de mostrar nada primero tenemos que ver que sea mayor de edad con una comprobacion basica -->
+	<div class="modal_18" id="modal_18">
+		<div class="contenido_18">
+			<img src="./img/telemon_2.png" class="imagen_18"/>
+			<h2> ¿Tienes más de 18 años de edad? </h2>
+			<p>	Estás intentando acceder a una web que ofrece información de juegos de azar y apuestas.
+				Esta web es únicamente para mayores de 18 años. Por favor, confirma tu edad para continuar.	</p>
+			<div class="botones_18">
+				<button class="btn-si" id="btn-si">Si soy mayor de 18</button>
+				<button class="btn-no" id="btn-no">No tengo 18</button>
+
+			</div>
+		</div>
+	</div>
+
+
 	<nav class="main-nav">
 		<div class="container-nav">
 			<img class="banner" src="img/telemon_2.png" />
@@ -52,6 +70,9 @@
 			</div>
 		</div>
 	</nav>
+
+
+
 
 	<main>
 		<!-- Menu para comprar cartas y sobres -->
@@ -88,7 +109,102 @@
 		<section class="tab-content" id="market-section">
 			<h2>Mercado</h2>
 			<p class="market-desc">Vende tus articulos a compradores locales pero ojo, cada uno tiene su presupuesto y sus gustos</p>
-			<div id="buyers-container" class="buyer-grid" ></div>
+			<div id="buyers-container" class="buyer-grid"></div>
+		</section>
+
+		<section class="tab-content" id="upgrade-section">
+			<h3>Mejoras y Upgrades</h3>
+			<p>Próximamente...</p>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer">
+			<p>©️ 2029 Telemon. Todos los derechos reservados</p>
+			<p> Este sitio está protegido por nuestra seguridad personal </p>
+			<div class="dratini-container">
+				<img src="img/dratini1.png" alt="dratini" class="dratini" />
+				<img src="img/dratini2.png" alt="dratini2" class="dratini" />
+				<img src="img/dratini3.png" alt="dratini3" class="dratini" />
+			</div>	
+		</div>
+	</footer>
+
+	<!-- Aqui va el modal para el pack opening -->
+	<div id="opening-modal" class="modal">
+		<div class="modal-content">
+			<button id="close-modal-btn" class="close-btn">&times;</button>
+			<h2 id="modal-title">Abriendo Sobre...</h2>
+
+			<div id="opening-table" class="opening-table">
+				<div id="pack-wrapper" class="pack-wrapper">
+					<div id="pack-body" class="pack-body">
+						<img id="modal-pack-img" src="" alt="Sobre Pokémon" />
+						<button id="open-pack-btn" class="open-btn">¡ABRIR SOBRE!</button>
+					</div>
+				</div>
+
+				<div id="deck-reveal-area" class="deck-reveal-area" style="display: none">
+					<p class="click-hint">Haz clic en la carta para revelarla (<span id="cards-left-count">5</span>
+						restantes)</p>
+					<div id="single-card-slot" class="single-card-slot"></div>
+				</div>
+
+				<div id="summary-area" class="summary-area" style="display: none">
+					<h3>¡Sobre Abierto!</h3>
+					<div id="cards-container" class="cards-reveal-grid"></div>
+					<div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para ver el album de cada coleccion -->
+	<div id="view-set-modal" class="modal">
+		<div class="modal-content modal-album">
+			<button id="close-set-modal-btn" class="close-btn">&times;</button>
+			<h2 id="album-modal-title">Expansion</h2>
+			<p id="album-modal-subtitle">Filtrar</p>
+			<!-- Aqui meto todos los filtros que quiera poner -->
+			 <div class="album-filters">
+				<select id="filter-type">
+					<option value="all">Todos los Tipos</option>
+						<option value="Fuego">Fuego</option>
+						<option value="Agua">Agua</option>
+						<option value="Planta">Planta</option>
+						<option value="Eléctrico">Eléctrico</option>
+						<option value="Psíquico">Psíquico</option>
+						<option value="Lucha">Lucha</option>
+						<option value="Oscuro">Oscuro</option>
+						<option value="Metal">Metal</option>
+						<option value="Dragón">Dragón</option>
+						<option value="Incoloro">Incoloro</option>
+					</select>
+					<div class="price-range-group">
+						<input type="number" id="filter-min-price" placeholder="Min $" min="0" step="0.5" />
+						<span>-</span>
+						<input type="number" id="filter-max-price" placeholder="Max $" min="0" step="0.5" />
+					</div>
+			 </div>
+			<div id="set-cards-grid" class="set-cards-grid"></div>
+		</div>
+	</div>
+
+
+	<!-- Modal para ver la carta solo con atropos -->
+	<div id="card-zoom-modal" class="modal card-zoom-modal">
+		<div class="card-zoom-content">
+			<div class="atropos card-zoom-atropos">
+				<div class="atropos-scale">
+					<div class="atropos-rotate">
+						<div class="atropos-inner">
+							<img id="zoom-card-img" src="" alt="Carta Pokémon" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 
@@ -102,6 +218,7 @@
 	<script src="/js/collection.js"></script>
 	<script src="/js/daily-shop.js"></script>
 	<script src="/js/market.js"></script>
+	<script src="/js/+18.js"></script>
 </body>
 
 </html>

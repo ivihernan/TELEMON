@@ -1,0 +1,82 @@
+.modal_18{
+
+    display: flex;
+    position: fixed;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+}
+
+.contenido_18{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    max-height: 85vh;
+    background-color: #000000;
+    border-radius: 18px;
+    border: 2px solid #fb86ff;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.imagen_18{
+
+    width: 320px;
+
+}
+
+.contenido_18 p{
+
+   font-size: 0.7rem; 
+   margin: 0 3rem;
+
+}
+
+.botones_18 {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+
+}
+
+.botones_18 button{
+
+    border: 2px transparent;
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    transition:all 0.3s ease-in-out;
+}
+
+.btn-si{
+
+    background-color: greenyellow;
+    
+}
+
+.btn-no{
+
+    background-color: red;
+    
+}
+
+.btn-si:hover{
+
+     background-color: rgb(182, 236, 102);
+
+}
+
+.btn-no:hover{
+
+     background-color: rgb(221, 109, 109);
+
+}

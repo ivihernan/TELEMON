@@ -1,0 +1,219 @@
+
+.upgrade-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.upgrade-nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.upg-nav-btn {
+    background: #1b1b22;
+    color: #9da4bd;
+    border: 2px solid #321b5e;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upg-nav-btn.active, .upg-nav-btn:hover {
+    background: #321b5e;
+    color: #fb86ff;
+    border-color: #fb86ff;
+    box-shadow: 0 0 15px rgba(251, 134, 255, 0.3);
+}
+
+
+.upgrade-minigame.hidden { 
+    display: none !important; 
+}
+
+.upgrade-minigame.active { 
+    display: block; 
+    animation: fadeIn 0.5s; 
+}
+
+.upg-card-slot {
+    width: 140px; height: 200px;
+    background: #1b1b22;
+    border: 2px dashed #fb86ff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #9da4bd;
+    position: relative;
+    overflow: hidden;
+}
+
+.upg-card-slot:hover { 
+    background: #2c2c39;
+    border-color: #d6ff6f; 
+    color: #d6ff6f; 
+}
+.upg-card-slot img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    position: absolute; 
+    top:0; 
+    left:0;
+}
+.plus-icon { 
+    font-size: 2rem; 
+    font-weight: bold; 
+}
+
+.upg-action-btn {
+    background: #54b26e;
+    color: #fff;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s;
+}
+
+.upg-action-btn:disabled { 
+    background: #3d425a; 
+    color: #6f6f72; 
+    cursor: not-allowed; 
+}
+.upg-action-btn:not(:disabled):hover { 
+    background: #d6ff6f; 
+    color: #12131c; 
+    box-shadow: 0 0 20px #54b26e; 
+}
+
+.risk-slider-container {
+    background: #1b1b22;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border: 1px solid #321b5e;
+}
+
+.risk-slider-container input { 
+    width: 100%; 
+    margin: 10px 0; 
+    cursor: pointer; 
+}
+.risk-labels { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 0.8rem; 
+    font-weight: bold; 
+}
+
+.swipe-layout {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 4rem; 
+    background: #12131c;
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    border: 1px solid #321b5e;
+}
+
+.swipe-ghost-card {
+    width: 140px; height: 200px;
+    border: 2px dashed #6f6f72;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.loser-side { 
+    text-align: center; 
+}
+.loser-side h4 { 
+    color: #e74c3c; 
+    margin-bottom: 1rem; 
+}
+.loser-side .swipe-ghost-card { 
+    color: #e74c3c; 
+    border-color: rgba(231, 76, 60, 0.3); 
+    background: rgba(231, 76, 60, 0.1); 
+}
+
+.winner-side { 
+    text-align: center; 
+}
+.winner-side h4 { 
+    color: #54b26e; 
+    margin-bottom: 1rem; }
+
+.winner-side .swipe-ghost-card { 
+    color: #54b26e; 
+    border-color: rgba(84, 178, 110, 0.3); 
+    background: rgba(84, 178, 110, 0.1); 
+}
+
+.swipe-center { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center; 
+    gap: 1.5rem; 
+}
+.swipe-center {
+    text-align: center;
+}
+
+
+.swipe-anim-left { 
+    transform: translateX(-200px) 
+    rotate(-15deg); 
+    opacity: 0; 
+}
+.swipe-anim-right { 
+    transform: translateX(200px) rotate(15deg); 
+    opacity: 0; 
+}
+
+
+.contrato-header { 
+    text-align: center; 
+    margin-bottom: 1.5rem; 
+    color: #9da4bd; 
+}
+.contrato-slots { 
+    display: flex; 
+    justify-content: center; 
+    gap: 1.5rem; 
+    flex-wrap: wrap; 
+    margin: 2rem 0;
+ }
+.contrato-footer { 
+    text-align: center; 
+}
+.contrato-footer p { 
+    font-size: 1.2rem; 
+    margin-bottom: 1rem; 
+    color: #d6ff6f; 
+    font-weight: bold;
+ }
+
+
+.upg-modal-card { 
+    cursor: pointer; 
+    transition: transform 0.2s; 
+}
+.upg-modal-card:hover { 
+    transform: translateY(-5px); 
+}

@@ -4,6 +4,17 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	
+	<!-- Cosas para el SEO -->
+	<meta name="description" content="Simulador para apertura de sobres pokemon con un mercado para vender las cartas conseguidas. Compra, vende y colecciona" />
+	<meta name="keywords" content="apertura de sobres, coleccion de cartas pokemon, mercado de cartas pokemon, simulador tcg, telemon, pokemon" />
+	
+	<!-- Open graph -->
+	<meta property="og:title" content="TELEMON" />
+    <meta property="og:description" content="Únete a la mejor experiencia virtual: apertura de sobres, colección y mercado de cartas Pokémon." />
+
+
 	<title>TELEMON</title>
 	<link rel="icon" href="/img/icono.jpg" type="image/x-icon" />
 
@@ -18,6 +29,8 @@
 	<link rel="stylesheet" href="styles/collection.css" />
 	<link rel="stylesheet" href="styles/market.css" />
 	<link rel="stylesheet" href="styles/+18.css" />
+	<link rel="stylesheet" href="styles/upgrade.css" />
+	<link rel="stylesheet" href="styles/buyMoney.css" />
 
 
 </head>
@@ -43,6 +56,11 @@
 	<nav class="main-nav">
 		<div class="container-nav">
 			<img class="banner" src="img/telemon_2.png" />
+			<button id="hamburger-btn" class="hamburger-btn">
+				<span></span>
+				<span></span>
+				<span></span>
+        	</button>
 			<div id="nav-menu" class="container-btn">
 				<button class="nav-btn active" data-tab="shop-section">Tienda</button>
 				<button class="nav-btn" data-tab="collection-section">Coleccion</button>
@@ -51,7 +69,9 @@
 			</div>
 		</div>
 		<div class="player">
-			<!-- <button>Iniciar Sesion</button> -->
+			<!-- <div>
+				<button>Iniciar Sesion</button>
+			</div> -->
 			<div class="player-stats">
 				<div class="player-inventory">
 					<img src="img/cards.png" />
@@ -61,7 +81,7 @@
 					</div>
 				</div>
 				<div class="player-saldo">
-					<img src="img/pocket.png" />
+					<img src="img/pocket.png" id="open-modal-pocket" />
 					<div class="container-pocket">
 						<p id="player-money">$100.00</p>
 						<p class="saldo-texto">Saldo en la cartera</p>
@@ -70,7 +90,6 @@
 			</div>
 		</div>
 	</nav>
-
 
 
 
@@ -110,12 +129,132 @@
 			<h2>Mercado</h2>
 			<p class="market-desc">Vende tus articulos a compradores locales pero ojo, cada uno tiene su presupuesto y sus gustos</p>
 			<div id="buyers-container" class="buyer-grid"></div>
-		</section>
 
-		<section class="tab-content" id="upgrade-section">
-			<h3>Mejoras y Upgrades</h3>
-			<p>Próximamente...</p>
+			<!-- Modal de Negociación -->
+			<div id="negotiation-modal" class="modal-market hidden">
+				<div class="modal-content">
+					<button id="close-modal" class="close-btn">&times;</button>
+					
+					<div class="modal-header">
+						<img id="modal-buyer-img" src="" alt="Comprador">
+						<div class="modal-buyer-info">
+							<h3 id="modal-buyer-name">Nombre</h3>
+							<p id="modal-buyer-personality" class="buyer-personality-tag">Personalidad</p>
+							<p id="modal-buyer-budget">Presupuesto: $0.00</p>
+						</div>
+					</div>
+					
+					<div class="modal-body">
+						<div class="inventory-section">
+							<h4>Tus cartas (Haz clic para añadir a la oferta)</h4>
+							<div id="modal-inventory-grid" class="cards-grid">
+							</div>
+						</div>
+						
+						<div class="negotiation-panel">
+							<div class="offer-summary">
+								<p>Valor real (Mercado): $<span id="market-value-display">0.00</span></p>
+								<p class="manual-offer-container">
+									Tu oferta: $ 
+									<input type="number" id="manual-offer-input" class="offer-input" value="0.00" min="0" step="0.01">
+								</p>
+							</div>
+							
+							<div class="price-controls">
+								<button class="price-btn" data-mod="-0.20">-20%</button>
+								<button class="price-btn" data-mod="-0.10">-10%</button>
+								<button class="price-btn" data-mod="0">Mercado</button>
+								<button class="price-btn" data-mod="0.10">+10%</button>
+								<button class="price-btn" data-mod="0.20">+20%</button>
+							</div>
+							
+							<div class="probability-container">
+								<p>Probabilidad de venta: <span id="prob-text">0%</span></p>
+								<div class="prob-bar-bg">
+									<div id="prob-bar-fill" class="prob-bar-fill"></div>
+								</div>
+							</div>
+							
+							<button id="btn-make-offer" class="offer-btn" disabled>Hacer Oferta</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
+        
+        <section class="tab-content" id="upgrade-section">
+			<h2>Upgrades</h2>
+            <div class="upgrade-header">
+                <div class="upgrade-nav-menu">
+                    <button class="upg-nav-btn active" data-game="swipe-game">Swipe 50/50</button>
+                    <button class="upg-nav-btn" data-game="contrato-game">Contrato</button>
+                </div>
+            </div>
+
+            
+            <div id="swipe-game" class="upgrade-minigame active">
+                <div class="swipe-controls">
+                    <div class="risk-slider-container">
+                        <label>RIESGO: <span id="risk-level-text">Bajo</span></label>
+                        <input type="range" id="swipe-risk-slider" min="1" max="10" value="2">
+                        <div class="risk-labels">
+                            <span style="color:#54b26e">Seguro</span>
+                            <span style="color:#e74c3c">Extremo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upg-layout swipe-layout">
+                    <div class="swipe-side loser-side">
+                        <h4>SI PIERDES...</h4>
+                        <div class="swipe-ghost-card" id="swipe-lose-ghost">
+                            <p>$<span id="swipe-lose-val">0.00</span></p>
+                        </div>
+                    </div>
+
+                    
+                    <div class="swipe-center">
+                        <div class="upg-card-slot" id="swipe-input-slot" onclick="openUpgInventory('swipe-input')">
+                            <span class="plus-icon">+</span>
+                            <p>Añade tu carta</p>
+                        </div>
+                        <button class="upg-action-btn" id="btn-play-swipe" disabled>SWIPE (JUGAR)</button>
+                    </div>
+
+                    
+                    <div class="swipe-side winner-side">
+                        <h4>SI GANAS...</h4>
+                        <div class="swipe-ghost-card" id="swipe-win-ghost">
+                            <p>$<span id="swipe-win-val">0.00</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JUEGO 2: EL CONTRATO -->
+            <div id="contrato-game" class="upgrade-minigame hidden">
+                <div class="contrato-header">
+                    <p>Sacrifica 5 cartas distintas de tu inventario. Obtendrás 1 carta nueva garantizada del catálogo general, con posibilidades de que sea de un valor extremo.</p>
+                </div>
+                <div class="contrato-slots" id="contrato-slots-container">
+                    <!-- Se generan en JS -->
+                </div>
+                <div class="contrato-footer">
+                    <p>Valor total sacrificado: $<span id="contrato-total-val">0.00</span></p>
+                    <button class="upg-action-btn" id="btn-play-contrato" disabled>FUSIONAR CARTAS</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Modal para seleccionar cartas con Atropos -->
+        <div id="upg-selector-modal" class="modal-market hidden">
+            <div class="modal-content">
+                <button id="close-upg-modal" class="close-btn">&times;</button>
+                <h3 id="upg-modal-title">Selecciona una carta</h3>
+                <div class="cards-grid" id="upg-modal-grid"></div>
+            </div>
+		</div>
 	</main>
 
 	<footer>
@@ -123,9 +262,9 @@
 			<p>©️ 2029 Telemon. Todos los derechos reservados</p>
 			<p> Este sitio está protegido por nuestra seguridad personal </p>
 			<div class="dratini-container">
-				<img src="img/dratini1.png" alt="dratini" class="dratini" />
-				<img src="img/dratini2.png" alt="dratini2" class="dratini" />
-				<img src="img/dratini3.png" alt="dratini3" class="dratini" />
+				<img src="img/dratini1.png" alt="dratini" class="dratini"  title="Dratini quiere aprobar IAW"/>
+				<img src="img/dratini2.png" alt="dratini2" class="dratini" title="Dragonair dice que le gusta SQL"/>
+				<img src="img/dratini3.png" alt="dratini3" class="dratini" title="Dragonite le gusta mucho programar"/>
 			</div>	
 		</div>
 	</footer>
@@ -207,6 +346,54 @@
 		</div>
 	</div>
 
+	<!-- Modal para meter mas dinero -->
+	<div class="modal hidden" id="buy-money">
+		<div class="modal-content">
+			<button id="close-buy-money" class="close-btn">&times;</button>
+			<h2>Ingresar Dinero</h2>
+			
+			<div class="buy-money-container">
+				<div class="payment-methods">
+					<button class="payment-btn active" data-target="crypto-form">Criptomonedas</button>
+					<button class="payment-btn" data-target="paypal-form">PayPal</button>
+					<button class="payment-btn" data-target="robux-form">Robux</button>
+				</div>
+
+				<div class="payment-forms">
+					<!-- Criptomonedas -->
+					<div class="payment-section active" id="crypto-form">
+						<h3>Pagar con Criptomonedas</h3>
+						<select id="crypto-type">
+							<option value="btc">Bitcoin (BTC)</option>
+							<option value="eth">Ethereum (ETH)</option>
+							<option value="usdt">Tether (USDT)</option>
+							<option value="usdt">XRP (Ripple)</option>
+							<option value="usdt">Cardano (ADA)</option>
+							<option value="usdt">Dogecoin(DOGE)</option>
+						</select>
+						<input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100">
+						<button class="btn-confirm-payment">Ingresar Fondos</button>
+					</div>
+
+					<!-- PayPal -->
+					<div class="payment-section hidden" id="paypal-form">
+						<h3>Pagar con PayPal</h3>
+						<input type="email" placeholder="Correo electrónico de PayPal">
+						<input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100">
+						<button class="btn-confirm-payment">Ingresar Fondos</button>
+					</div>
+
+					<!-- Robux -->
+					<div class="payment-section hidden" id="robux-form">
+						<h3>Pagar con Robux</h3>
+						<input type="text" placeholder="Usuario de Roblox">
+						<input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100">
+						<button class="btn-confirm-payment">Ingresar Fondos</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script>
 
@@ -219,6 +406,8 @@
 	<script src="/js/daily-shop.js"></script>
 	<script src="/js/market.js"></script>
 	<script src="/js/+18.js"></script>
+	<script src="/js/upgrade.js"></script>
+	<script src="/js/buyMoney.js"></script>
 </body>
 
 </html>

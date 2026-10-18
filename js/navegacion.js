@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const navButtons = document.querySelectorAll('.nav-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
+    const hamburgerBtn = document.getElementById('hamburger-btn')
+    const navMenu = document.getElementById('nav-menu')
+
+    if(hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('open')
+        })
+    }
+
     navButtons.forEach(button => {
         button.addEventListener('click', () => {
             const targetTabId = button.getAttribute('data-tab');
@@ -19,8 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeTabSection.classList.add('active');
             }
 
-          
-            const navMenu = document.getElementById('nav-menu');
             if (navMenu) navMenu.classList.remove('open');
 
 

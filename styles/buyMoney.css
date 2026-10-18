@@ -1,0 +1,139 @@
+#buy-money {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+#buy-money h2{
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+
+.buy-money-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    min-height: 300px;
+
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    border-right: 2px solid #eee;
+    padding-right: 15px;
+    gap: 10px;
+}
+
+.payment-btn {
+    background: none;
+    border: 2px solid transparent;
+    padding: 12px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.payment-btn.active {
+    background-color: #e0f0ff;
+    border-left: 4px solid #007bff;
+    font-weight: bold;
+}
+
+
+.payment-forms {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.payment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-section h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.payment-section input, .payment-section select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.card-details {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-confirm-payment {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.btn-confirm-payment:hover {
+    background-color: #218838;
+}
+
+
+.hidden {
+    display: none !important;
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.payment-section:not(.hidden) {
+    display: flex;
+    animation: fadeSlideIn 0.3s ease-out forwards;
+}

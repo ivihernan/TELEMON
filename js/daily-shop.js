@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded",  () => {
     document.getElementById('reroll-shop-btn')?.addEventListener('click', rerollDailyShop)
 })
 
+
+//Este codigo lo dejo para el principio del juego para que salgan cartas mas bartas
 function generateDailyShop() {
     let allCards = []
     allSetsData.forEach(s => {
@@ -18,38 +20,89 @@ function generateDailyShop() {
 
     if (allCards.length === 0) return
 
-    //Quiero que las cartas salgan de un rango medio 
-    const priorityCards = allCards.filter(c => (c.basePrice || 0) >= 12 && (c.basePrice || 0) <= 45)
-    const pool = priorityCards.length >= 12 ? priorityCards : allCards
+    const poolLow = allCards.filter(c => (c.basePrice || 0) >= 0 && (c.basePrice || 0) <= 2)
+    const poolMid = allCards.filter(c => (c.basePrice || 0) > 2 && (c.basePrice || 0) <= 4)
+    const poolHigh = allCards.filter(c => (c.basePrice || 0) > 4)
 
     dailyShopCards = []
-    const usedIndexes = new Set()
 
-    //Genero 24 cartas
-    while (dailyShopCards.length < 24 && usedIndexes.size < pool.length) {
-        const index = Math.floor(Math.random() * pool.length)
-        if(!usedIndexes.has(index)){
-            usedIndexes.add(index)
+    function pickRandomCards(pool, amount) {
+        const usedIndexes = new Set()
+        const limit = Math.min(amount, pool.length)
 
-            const cards = pool[index]
-            const hasDiscount = Math.random() < 0.64 // El valor de que hay descuentos
-            const discountPercent = hasDiscount ? [10, 15, 20, 25, 30, 40][Math.floor(Math.random() * 6)] : 0
+        while (usedIndexes.size < limit) {
+            const index = Math.floor(Math.random() * pool.length)
+            if(!usedIndexes.has(index)){
+                usedIndexes.add(index)
 
-            const originalPrice = cards.basePrice || 0
-            const finalPrice = hasDiscount ? originalPrice * (1- discountPercent / 100) : originalPrice
+                const card = pool[index]
+                const hasDiscount = Math.random() < 0.64 
+                const discountPercent = hasDiscount ? [10, 15, 20, 25, 30, 40][Math.floor(Math.random() * 6)] : 0
 
-            dailyShopCards.push({
-                cardData: cards,
-                originalPrice: originalPrice,
-                finalPrice: finalPrice,
-                discountPercent: discountPercent,
-                purchased: false,
-            })
+                const originalPrice = card.basePrice || 0
+                const finalPrice = hasDiscount ? originalPrice * (1 - discountPercent / 100) : originalPrice
+
+                dailyShopCards.push({
+                    cardData: card,
+                    originalPrice: originalPrice,
+                    finalPrice: finalPrice,
+                    discountPercent: discountPercent,
+                    purchased: false,
+                })
+            }
         }
     }
 
+    pickRandomCards(poolLow, 16) 
+    pickRandomCards(poolMid, 6)  
+    pickRandomCards(poolHigh, 2) 
+
+    dailyShopCards.sort(() => Math.random() - 0.5)
+
     renderDailyShop()
 }
+
+//En este ya salen cosas mucho mas caras
+// function generateDailyShop() {
+//     let allCards = []
+//     allSetsData.forEach(s => {
+//         if(s.cards) allCards = allCards.concat(s.cards)
+//     })
+
+//     if (allCards.length === 0) return
+
+//     //Quiero que las cartas salgan de un rango medio 
+//     const priorityCards = allCards.filter(c => (c.basePrice || 0) >= 12 && (c.basePrice || 0) <= 45)
+//     const pool = priorityCards.length >= 12 ? priorityCards : allCards
+
+//     dailyShopCards = []
+//     const usedIndexes = new Set()
+
+//     //Genero 24 cartas
+//     while (dailyShopCards.length < 24 && usedIndexes.size < pool.length) {
+//         const index = Math.floor(Math.random() * pool.length)
+//         if(!usedIndexes.has(index)){
+//             usedIndexes.add(index)
+
+//             const cards = pool[index]
+//             const hasDiscount = Math.random() < 0.64 // El valor de que hay descuentos
+//             const discountPercent = hasDiscount ? [10, 15, 20, 25, 30, 40][Math.floor(Math.random() * 6)] : 0
+
+//             const originalPrice = cards.basePrice || 0
+//             const finalPrice = hasDiscount ? originalPrice * (1- discountPercent / 100) : originalPrice
+
+//             dailyShopCards.push({
+//                 cardData: cards,
+//                 originalPrice: originalPrice,
+//                 finalPrice: finalPrice,
+//                 discountPercent: discountPercent,
+//                 purchased: false,
+//             })
+//         }
+//     }
+
+//     renderDailyShop()
+// }
 
 function renderDailyShop() {
     const container = document.getElementById('daily-cards-grid')

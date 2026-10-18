@@ -1,6 +1,10 @@
 .tab-content{
-    min-height: 65vh;
-    font-family:'Orbitron'
+    min-height: 70vh;
+    font-family: 'Orbitron', sans-serif;
+}
+
+#close-modal {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .tab-content h2{ 
@@ -75,3 +79,140 @@
     color: #6f6f72
 }
 
+
+
+/* --- Estilos del Modal --- */
+.modal-market {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.3s ease;
+}
+
+.modal-market.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.modal-content {
+    background: #1b1b22;
+    border: 2px solid #fb86ff;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    color: #fff;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid #321b5e;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header img {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid #54b26e;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #2c2c39;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.card-item {
+    background: #1b1b22;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.card-item img { width: 100%; border-radius: 5px; }
+.card-item.selected { border-color: #d6ff6f; background: #3a4719; }
+
+.price-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.price-btn {
+    background: #321b5e; color: #c0a3f5;
+    border: none; border-radius: 5px;
+    padding: 0.5rem 1rem; cursor: pointer;
+    font-weight: bold; transition: all 0.2s;
+}
+
+.price-btn:hover { background: #fb86ff; color: #1b1b22; }
+
+.probability-container { margin: 1.5rem 0; }
+.prob-bar-bg {
+    width: 100%; height: 20px;
+    background: #2c2c39; border-radius: 10px;
+    overflow: hidden; margin-top: 0.5rem;
+}
+
+.prob-bar-fill {
+    height: 100%; width: 0%;
+    background: #54b26e; transition: width 0.3s, background-color 0.3s;
+}
+
+.offer-btn {
+    width: 100%; padding: 1rem;
+    background: #54b26e; color: #fff;
+    border: none; border-radius: 10px;
+    font-size: 1.2rem; cursor: pointer; font-weight: bold;
+}
+.offer-btn:disabled { background: #555; cursor: not-allowed; }
+
+
+
+.offer-input {
+    background: #1b1b22;
+    color: #fff;
+    border: 2px solid #fb86ff;
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    width: 120px;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.offer-input:focus {
+    box-shadow: 0 0 10px #fb86ff;
+}
+
+.manual-offer-container{
+    margin-top: 1.2rem;
+}

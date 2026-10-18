@@ -131,9 +131,13 @@ function generatePackWithRarity(cards, packSize) {
 		const roll = Math.random() * 100
 		let pool = budgetCards
 
-		if (roll < 10 && topValueCards.length > 0) {
+
+		//Cambio las probabilidades porqeu si no el usuario siempre gana
+		//El 10% lo bajo al 3 para que no salgan muchas cartas top
+		// el 40% lo bajo al 15% para que sobre todo salgan cartas por debajo de los 5 dolares
+		if (roll < 3 && topValueCards.length > 0) {
 			pool = topValueCards
-		} else if (roll < 40 && midValueCards.length > 0) {
+		} else if (roll < 15 && midValueCards.length > 0) {
 			pool = midValueCards
 		}
 

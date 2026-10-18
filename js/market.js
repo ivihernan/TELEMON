@@ -2,6 +2,8 @@ let activeBuyer = []
 let selectedBuyer = null
 let selectedCardLot = []
 let currentSellingPrice = 0
+let baseMarketValue = 0; 
+let modalAtroposInstances = [];
 
 const PERSONALITIES = [
     { name: 'Rata', img: 'img/p1.png', multiplier: 0.75, desc: 'Solo busca gangas tiradas de precio.' },
@@ -18,19 +20,20 @@ const PERSONALITIES = [
 
 const BUYER_NAMES = ['Rodrigo', 'Amelia', 'Carolina', 'Abril', 'Ivan', 'Sr. Presidente', 'Carlos Alcaraz', 'Verstappen', 'Fernando Alonso', 'Carlos Sainz', 'Aqui Jordi', 'Llados']
 
+document.addEventListener('DOMContentLoaded', () => {
+    const marketSection = document.getElementById('market-section')
+    if (marketSection && marketSection.classList.contains('active')) {
+        initMarket()
+    }
+    setupModalEventListener()
+})
+
 function initMarket() {
     if (activeBuyer.length === 0) {
         generateBuyers()
     }
     renderBuyers()
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const marketSection = document.getElementById('market-section')
-    if (marketSection && marketSection.classList.contains('active')) {
-        initMarket()
-    }
-})
 
 function generateBuyers() {
     activeBuyer = []
@@ -81,4 +84,206 @@ function renderBuyers() {
         card.addEventListener('click', () => openNegotiateModal(buyer))
         container.appendChild(card)
     })
+}
+
+//Todo esto es para a partir de elegir el buyer para abir el modal
+
+function openNegotiateModal(buyer){
+    selectedBuyer = buyer;
+    selectedCardLot = [];
+    currentSellingPrice = 0
+    baseMarketValue = 0
+
+    document.getElementById('negotiation-modal').classList.remove('hidden')
+
+
+    document.getElementById('modal-buyer-img').src = buyer.personality.img
+    document.getElementById('modal-buyer-name').textContent = buyer.name
+    document.getElementById('modal-buyer-personality').textContent = buyer.personality.name
+    document.getElementById('modal-buyer-budget').textContent = `Presupuesto: $${buyer.budget.toFixed(2)}`
+
+    renderModalInventory()
+    calculateBaseValue()
+}
+
+
+
+function renderModalInventory() {
+    const grid = document.getElementById('modal-inventory-grid')
+    if(!grid) return
+
+    grid.innerHTML = ''
+
+    modalAtroposInstances.forEach(instance => instance.destroy());
+    modalAtroposInstances = [];
+
+    player.inventory.forEach((card, index) => {
+        const cardDiv = document.createElement('div')
+        cardDiv.className = 'card-item'
+
+        const cardPrice = card.basePrice || 0;
+
+       cardDiv.innerHTML = `
+            <div class="atropos modal-atropos-${index}">
+                <div class="atropos-scale">
+                    <div class="atropos-rotate">
+                        <div class="atropos-inner">
+                            <img src="${card.image}" alt="${card.name}" class="market-card-img" onerror="this.src='img/cards.png'">
+                            <div class="reveal-price-badge ${cardPrice >= 40.0 ? 'valuable' : ''}">
+                                $${cardPrice.toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        cardDiv.addEventListener('click', () => {
+            const index = selectedCardLot.findIndex(c => c.id === card.id)
+            if(index > -1) {
+                selectedCardLot.splice(index, 1)
+                cardDiv.classList.remove('selected')
+            }else {
+                selectedCardLot.push(card)
+                cardDiv.classList.add('selected')
+            }
+            calculateBaseValue()
+        })
+
+        grid.appendChild(cardDiv)
+
+        const instance = Atropos({
+            el: `.modal-atropos-${index}`,
+            activeOffset: 20,
+			shadow: false,
+			glare: true,
+			maxGlare: 0.4,
+        });
+
+        modalAtroposInstances.push(instance)
+    })
+}
+
+function calculateBaseValue() {
+    baseMarketValue = selectedCardLot.reduce((sum, card) => sum + (card.basePrice || 0), 0)
+
+    currentSellingPrice = baseMarketValue
+
+    document.getElementById('manual-offer-input').value = currentSellingPrice.toFixed(2)
+    updateNegotiationUI()
+}
+
+function updateNegotiationUI() {
+    document.getElementById('market-value-display').textContent = baseMarketValue.toFixed(2)
+
+    const btnOffer = document.getElementById('btn-make-offer')
+    let probability = 0
+
+    if(selectedCardLot.length === 0) {
+        probability = 0
+        btnOffer.disabled = true
+    }else if(currentSellingPrice > selectedBuyer.budget){
+        probability = 0
+        btnOffer.disabled = true
+        document.getElementById('prob-text').textContent = '0% (Excede el presuspuesto del buyer escogido)'
+    }else {
+        btnOffer.disabled = false
+
+        const perceivedValue = baseMarketValue * selectedBuyer.personality.multiplier
+        const greedRatio = currentSellingPrice / perceivedValue
+
+        if(greedRatio <= 0.8){
+            probability = 100
+        }else if( greedRatio >= 1.5){
+            probability = 0
+        }else{
+            probability = 100 - ((greedRatio - 0.8) / 0.5) * 100
+        }
+
+        probability = Math.max(0, Math.min(100, Math.round(probability)))
+        document.getElementById('prob-text').textContent = `${probability}%`
+    }
+ 
+    const barFill = document.getElementById('prob-bar-fill')
+    barFill.style.width = `${probability}%`
+
+    if (probability >= 90) barFill.style.backgroundColor = '#00ffaa';
+    else if (probability >= 70) barFill.style.backgroundColor = '#53b26e';
+    else if (probability >= 50) barFill.style.backgroundColor = '#a2d149';
+    else if (probability >= 30) barFill.style.backgroundColor = '#f1c40f'; 
+    else if (probability >= 15) barFill.style.backgroundColor = '#f39c12'; 
+    else barFill.style.backgroundColor = '#e74c3c';
+
+
+    btnOffer.setAttribute('data-prob', probability)
+}
+
+
+function closeAlbumModal() {
+    const modal = document.getElementById('negotiation-modal')
+    if (modal) {
+        modal.classList.add('hidden')
+    }
+
+    modalAtroposInstances.forEach(instance => instance.destroy());
+    modalAtroposInstances = [];
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('negotiation-modal')
+    const closeBtn = document.getElementById('close-modal')
+
+    closeBtn?.addEventListener('click', closeAlbumModal)
+
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeAlbumModal()
+        }
+    })
+})
+
+function setupModalEventListener() {
+
+document.getElementById('manual-offer-input').addEventListener('input', (e) => {
+    currentSellingPrice = parseFloat(e.target.value) || 0;
+    updateNegotiationUI();
+});
+
+
+document.querySelectorAll('.price-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        if(selectedCardLot.length === 0) return
+        const modifier = parseFloat(e.target.getAttribute('data-mod'))
+        currentSellingPrice = baseMarketValue + (baseMarketValue * modifier)
+
+        document.getElementById('manual-offer-input').value = currentSellingPrice.toFixed(2)
+        updateNegotiationUI()
+    })
+})
+
+document.getElementById('btn-make-offer').addEventListener('click', (e) => {
+    const probability = parseInt(e.target.getAttribute('data-prob'))
+    const roll = Math.floor(Math.random() * 100) + 1
+
+    if(roll <= probability) {
+        alert(`Venta completada.  ${selectedBuyer.name} compro tus cartas por valor de ${currentSellingPrice.toFixed(2)}.`)
+        selectedBuyer.budget -= currentSellingPrice
+
+        player.money += currentSellingPrice
+
+        selectedCardLot.forEach(soldCard => {
+            const index = player.inventory.findIndex(c => c.id === soldCard.id)
+            if(index > -1) player.inventory.splice(index, 1)
+        })
+
+        if(typeof updateUI === 'function') updateUI()
+
+        document.getElementById('negotiation-modal').classList.add('hidden')
+        renderBuyers()
+    }else{
+        alert(`${selectedBuyer.name} no ha acpetado tu oferta, prueba bajando el precio`)
+        document.getElementById('negotiation-modal').classList.add('hidden')
+    }
+})
+
 }

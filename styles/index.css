@@ -89,14 +89,6 @@ body {
 	gap: 1rem;
 }
 
-.player button {
-	cursor: pointer;
-	background-color: #54b26e;
-	border: none;
-	border-radius: 12px;
-	padding: 0.5rem 1.5rem;
-}
-
 .player-stats {
 	padding: 0.6rem 1.2rem;
 	border-radius: 12px;
@@ -150,6 +142,66 @@ body {
 	font-weight: 600;
 }
 
+.guest-actions {
+	display: flex;
+	align-items: center;
+	gap: 0.85rem;
+}
+
+.guest-actions button {
+	font-family: 'Orbitron', sans-serif;
+	font-size: 0.875rem;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	padding: 10px 20px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	outline: none;
+	box-sizing: border-box;
+}
+
+.guest-actions button:focus-visible {
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.6);
+}
+
+.btn-open-register {
+	color: #fff;
+	background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+	border: 1px solid transparent;
+	box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+.btn-open-register:hover {
+	background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-open-register:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.btn-open-login {
+	color: #e5e7eb;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.btn-open-login:hover {
+	color: #ffffff;
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(99, 102, 241, 0.5);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.btn-open-login:active {
+	transform: translateY(0);
+}
+
 main {
 	max-width: 80vw;
 	margin: 2rem auto;
@@ -175,106 +227,102 @@ main {
 
 /* Todo esto va a ser para tablets y para moviles */
 .hamburger-btn {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 101;
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30px;
+	height: 21px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	z-index: 101;
 }
 
 .hamburger-btn span {
-    width: 100%;
-    height: 3px;
-    background-color: #fb86ff;
-    border-radius: 10px;
-    transition: all 0.3s linear;
+	width: 100%;
+	height: 3px;
+	background-color: #fb86ff;
+	border-radius: 10px;
+	transition: all 0.3s linear;
 }
 
 @media screen and (max-width: 1024px) {
-    .player-stats {
-        gap: 1rem;
-        padding: 0.5rem;
-    }
-    .player-inventory, .player-saldo {
-        padding: 0.25rem 1rem;
-        gap: 1rem;
-    }
-    .banner {
-        width: 120px;
-    }
+	.player-stats {
+		gap: 1rem;
+		padding: 0.5rem;
+	}
+	.player-inventory,
+	.player-saldo {
+		padding: 0.25rem 1rem;
+		gap: 1rem;
+	}
+	.banner {
+		width: 120px;
+	}
 }
 
 @media screen and (max-width: 768px) {
-    .container-nav {
-        width: 100%;
-        justify-content: space-between;
-    }
+	.container-nav {
+		width: 100%;
+		justify-content: space-between;
+	}
 
-    .hamburger-btn {
-        display: flex;
-    }
+	.hamburger-btn {
+		display: flex;
+	}
 
-    #nav-menu.container-btn {
-        display: none; 
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: #1b1b22;
-        border-bottom: 2px solid #fb86ff;
-        border-radius: 0 0 15px 15px;
-        padding: 1rem 0;
-        z-index: 100;
-    }
+	#nav-menu.container-btn {
+		display: none;
+		flex-direction: column;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		background: #1b1b22;
+		border-bottom: 2px solid #fb86ff;
+		border-radius: 0 0 15px 15px;
+		padding: 1rem 0;
+		z-index: 100;
+	}
 
-    #nav-menu.container-btn.open {
-        display: flex;
-    }
+	#nav-menu.container-btn.open {
+		display: flex;
+	}
 
-    .nav-btn {
-        width: 100%;
-        padding: 1rem;
-    }
-    .player {
-        width: 100%;
-        justify-content: center;
-        margin-top: 1rem;
-        padding-bottom: 0.5rem;
-    }
+	.nav-btn {
+		width: 100%;
+		padding: 1rem;
+	}
+	.player {
+		width: 100%;
+		justify-content: center;
+		margin-top: 1rem;
+		padding-bottom: 0.5rem;
+	}
 }
 
-
 .footer {
-    color: #9f9ba3;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 6rem;
-
+	color: #9f9ba3;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 6rem;
 }
 
 .dratini {
-    width: 50px;
-    height: auto;
-    margin-top: 0.5rem;
-    
+	width: 50px;
+	height: auto;
+	margin-top: 0.5rem;
 }
 
 .dratini-container {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
 }
-
-

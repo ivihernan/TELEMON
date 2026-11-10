@@ -28,11 +28,12 @@
 		<link rel="stylesheet" href="styles/+18.css" />
 		<link rel="stylesheet" href="styles/upgrade.css" />
 		<link rel="stylesheet" href="styles/buyMoney.css" />
+		<link rel="stylesheet" href="styles/logins.css" />
 	</head>
 
 	<body>
 		<!-- ANtes de mostrar nada primero tenemos que ver que sea mayor de edad con una comprobacion basica -->
-		<div class="modal_18" id="modal_18">
+		<!-- <div class="modal_18" id="modal_18">
 			<div class="contenido_18">
 				<img src="./img/telemon_2.png" class="imagen_18" />
 				<h2> ¿Tienes más de 18 años de edad? </h2>
@@ -42,7 +43,7 @@
 					<button class="btn-no" id="btn-no">No tengo 18</button>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<nav class="main-nav">
 			<div class="container-nav">
@@ -60,10 +61,11 @@
 				</div>
 			</div>
 			<div class="player">
-				<!-- <div>
-				<button>Iniciar Sesion</button>
-			</div> -->
-				<div class="player-stats">
+				<div id="guest-actions" class="guest-actions">
+					<button type="button" id="btn-open-register" class="btn-open-register">Crear Cuenta</button>
+					<button type="button" id="btn-open-login" class="btn-open-login">Iniciar Sesion</button>
+				</div>
+				<div class="player-stats" id="user-stats" style="display: none">
 					<div class="player-inventory">
 						<img src="img/cards.png" />
 						<div class="container-money">
@@ -78,6 +80,7 @@
 							<p class="saldo-texto">Saldo en la cartera</p>
 						</div>
 					</div>
+					<button id="btn-logout" class="btn-logout" type="button" title="Cerrar Sesion">🚪</button>
 				</div>
 			</div>
 		</nav>
@@ -250,6 +253,76 @@
 			</div>
 		</footer>
 
+		<!-- Modal para crear cuenta -->
+		<div class="modal" id="form-modal">
+			<div class="modal-content">
+				<button id="btn-close-register" class="close-btn" type="button"> &times;</button>
+
+				<div class="modal-header">
+					<h2>Crear Cuenta</h2>
+					<p class="modal-subtitle">Inresa tus datos para registrarte</p>
+				</div>
+
+				<form class="crear_cuenta" id="crear_cuenta_form">
+					<div class="input-group">
+						<label for="username">Nombre de usuario</label>
+						<input id="username" type="text" placeholder="Ej. AmeliGoat" maxlength="100" required />
+					</div>
+
+					<div class="input-group">
+						<label for="email">Correo electronico</label>
+						<input id="email" type="email" placeholder="nombre@ejemplo.com" required maxlength="100" />
+					</div>
+
+					<div class="input-group">
+						<label for="password">Password</label>
+						<input id="password" type="password" placerholder="********" required maxlength="255" />
+					</div>
+					<div class="input-group">
+						<label for="ciudad">Ciudad</label>
+						<div class="select-wrapper">
+							<select id="ciudad" required>
+								<option value="" disabled selected hidden>Selecciona una opcion</option>
+								<option value="Valladolid">Valladolid</option>
+								<option value="El bierzo">El bierzo</option>
+								<option value="Comuna 3">Comuna 3</option>
+								<option value="Ferxxo">Ferxxo</option>
+								<option value="Feid">Feid</option>
+								<option value="Segovia">Segovia</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="input-group">
+						<label for="fecha_nacimiento">Fecha de nacimiento: </label>
+						<input id="fecha_nacimiento" type="date" required />
+					</div>
+					<button type="submit" class="btn-submit">Crear Cuenta</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal de Iniciar Sesión -->
+		<div class="modal" id="login-modal">
+			<div class="modal-content">
+				<button id="btn-cerrar-login" class="close-btn" type="button">&times;</button>
+				<div class="modal-header">
+					<h2>Iniciar Sesion</h2>
+				</div>
+				<form id="iniciar_sesion_form" class="iniciar_sesion">
+					<div class="input-group">
+						<label for="login_email">Correo electronico</label>
+						<input id="login_email" type="email" placeholder="nombre@ejemplo.com" required />
+					</div>
+					<div class="input-group">
+						<label for="password">Password</label>
+						<input id="login_password" type="password" placeholder="********" required />
+					</div>
+					<button type="submit" class="btn-submit">Entrar</button>
+				</form>
+			</div>
+		</div>
+
 		<!-- Aqui va el modal para el pack opening -->
 		<div id="opening-modal" class="modal">
 			<div class="modal-content">
@@ -375,16 +448,19 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script>
 
-		<script src="/js/index.js"></script>
-		<script src="/js/shop.js"></script>
-		<script src="/js/pack-opening.js"></script>
-		<script src="/js/album.js"></script>
-		<script src="/js/navegacion.js"></script>
-		<script src="/js/collection.js"></script>
-		<script src="/js/daily-shop.js"></script>
-		<script src="/js/market.js"></script>
-		<script src="/js/+18.js"></script>
-		<script src="/js/upgrade.js"></script>
-		<script src="/js/buyMoney.js"></script>
+		<script src="js/index.js"></script>
+		<script src="js/shop.js"></script>
+		<script src="js/pack-opening.js"></script>
+		<script src="js/album.js"></script>
+		<script src="js/navegacion.js"></script>
+		<script src="js/collection.js"></script>
+		<script src="js/daily-shop.js"></script>
+		<script src="js/market.js"></script>
+		<script src="js/+18.js"></script>
+		<script src="js/upgrade.js"></script>
+		<script src="js/buyMoney.js"></script>
+		<script src="js/crear-cuenta.js"></script>
+		<script src="js/login.js"></script>
+		<script src="js/auth-ui.js"></script>
 	</body>
 </html>

@@ -1,49 +1,76 @@
-<?php 
+<?php
 header("Content-Type: application/json; charset=UTF-8");
-
 require_once "conexion.php";
 
+// Leer datos (JSON o POST tradicional)
 $input = file_get_contents("php://input");
 $datos = json_decode($input, true);
 
-if (!$datos || empty($datos['email']) || empty($datos['password']) || empty($datos['username']) || empty($datos['ciudad']) || empty($datos['fecha_nacimiento'])) {
+if (!$datos) {
+    $datos = $_POST;
+}
+
+// Extraer campos limpiando espacios
+$email = trim($datos['email'] ?? '');
+$password = trim($datos['password'] ?? '');
+$username = trim($datos['username'] ?? '');
+$ciudad = trim($datos['ciudad'] ?? '');
+$fecha_nacimiento = trim($datos['fecha_nacimiento'] ?? '');
+
+// Identificar exactamente si falta algún campo
+$faltantes = [];
+if (empty($email)) $faltantes[] = 'email';
+if (empty($password)) $faltantes[] = 'password';
+if (empty($username)) $faltantes[] = 'username';
+if (empty($ciudad)) $faltantes[] = 'ciudad';
+if (empty($fecha_nacimiento)) $faltantes[] = 'fecha_nacimiento';
+
+if (!empty($faltantes)) {
     http_response_code(400);
-    echo json_encode(["status" => "error", "mensaje" => "Todos los campos son obligatorios."]);
+    echo json_encode([
+        "status" => "error",
+        "mensaje" => "Faltan los siguientes campos: " . implode(", ", $faltantes)
+    ]);
     exit();
 }
 
-//Compruebo la edad
-try{
-  $fechaNacimiento = new DateTime($datos['fecha_nacimiento']);
-  $hoy = new DateTime();
-  $edad = $hoy->diff($fechaNacimiento)->y;
-
-  if($edad < 18){
-    http_response_code(400);
-    echo json_encode(["status" => "error", "mensaje" => "Debes ser mayor de edad para crearte la cuenta."]);
-    exit();
-  }
-}catch(Exception $e){
-  http_response_code(400);
-  echo json_encode(["status" => "error", "mensaje" => "Formato de fecha no valida."]);
-  exit();
-}
-
-//En el ccaso que si sea mayor de edad
+// Validar mayoría de edad (18 años)
 try {
-    $passwordHash = password_hash($datos['password'], PASSWORD_DEFAULT);
+    $fechaNacObj = new DateTime($fecha_nacimiento);
+    $hoy = new DateTime();
+    $edad = $hoy->diff($fechaNacObj)->y;
+
+    if ($edad < 18) {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "mensaje" => "Debes ser mayor de 18 años para registrarte."]);
+        exit();
+    }
+} catch (Exception $e) {
+    http_response_code(400);
+    echo json_encode(["status" => "error", "mensaje" => "La fecha de nacimiento no es válida."]);
+    exit();
+}
+
+// Insertar en la Base de Datos
+try {
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO usuarios (nombre, email, password, ciudad, fecha_nacimiento) VALUES (?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $datos['username'],
-        $datos['email'],
-        $passwordHash,
-        $datos['ciudad'],
-        $datos['fecha_nacimiento']
-    ]);
+    $stmt->execute([$username, $email, $passwordHash, $ciudad, $fecha_nacimiento]);
 
-    echo json_encode(["status" => "ok", "mensaje" => "Cuenta creada correctamente."]);
+    $idNuevoUsuario = $pdo->lastInsertId();
+
+    $usuarioNuevo = [
+        "id" => $idNuevoUsuario,
+        "nombre" => $username,
+        "email" => $email,
+        "ciudad" => $ciudad,
+        "fecha_nacimiento" => $fecha_nacimiento,
+        "saldo" => 100.00
+    ];
+
+    echo json_encode(["status" => "ok", "mensaje" => "Cuenta creada correctamente.", "usuario" => $usuarioNuevo]);
 
 } catch (PDOException $e) {
     http_response_code(500);

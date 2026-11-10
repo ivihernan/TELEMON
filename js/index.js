@@ -1,7 +1,7 @@
 //Variables globales para el juego de cartas
 
 let player = {
-	money: 100.0,
+	money: 0.0,
 	inventory: [],
 }
 
@@ -10,12 +10,19 @@ let currentPackCards = []
 let currentCardIndex = 0
 let currentInspectedCards = []
 
-let zoomAtroposInstance = null;
-
+let zoomAtroposInstance = null
 
 function updateUI() {
+	const usuarioGuardado = localStorage.getItem('usuario_telemon')
+
+	if (usuarioGuardado) {
+		const usuario = JSON.parse(usuarioGuardado)
+		player.money = parseFloat(usuario.saldo || 0)
+	} else {
+		player.money = 0.0
+	}
 	//Primero actualizo el dinero del jugador cuando compra
-  //Con el metodo toFixed(2) se asegura que siempre tenga dos decimales
+	//Con el metodo toFixed(2) se asegura que siempre tenga dos decimales
 	const moneyElement = document.getElementById('player-money')
 	if (moneyElement) moneyElement.textContent = `$${player.money.toFixed(2)}`
 
@@ -33,66 +40,64 @@ function updateUI() {
 	}
 }
 
-
 function openCardZoomModal(card) {
-    if (!card) return;
+	if (!card) return
 
-    const modal = document.getElementById('card-zoom-modal');
-    const cardImg = document.getElementById('zoom-card-img');
+	const modal = document.getElementById('card-zoom-modal')
+	const cardImg = document.getElementById('zoom-card-img')
 
-    if (cardImg) cardImg.src = card.image;
+	if (cardImg) cardImg.src = card.image
 
+	// Limpiar instancia previa si existe
+	if (zoomAtroposInstance) {
+		zoomAtroposInstance.destroy()
+		zoomAtroposInstance = null
+	}
 
-    // Limpiar instancia previa si existe
-    if (zoomAtroposInstance) {
-        zoomAtroposInstance.destroy();
-        zoomAtroposInstance = null;
-    }
+	if (modal) {
+		modal.classList.add('active')
+		document.body.style.overflow = 'hidden'
+	}
 
-    if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+	// Inicializar Atropos con iluminación glare
+	zoomAtroposInstance = Atropos({
+		el: '.card-zoom-atropos',
+		activeOffset: 50, //CUnato sale la carta
+		shadow: true,
+		shadowOffset: 40, //Distanci de la sombra
+		shadowScale: 1.05,
 
-    // Inicializar Atropos con iluminación glare
-    zoomAtroposInstance = Atropos({
-        el: '.card-zoom-atropos',
-        activeOffset: 50, //CUnato sale la carta
-        shadow: true,
-        shadowOffset: 40, //Distanci de la sombra
-        shadowScale: 1.05,
-
-        glare: true,
-        maxGlare: 2,
-    });
+		glare: true,
+		maxGlare: 2,
+	})
 }
 
 function closeCardZoomModal() {
-    const modal = document.getElementById('card-zoom-modal');
-    if (modal) {
-        modal.classList.remove('active');
-        
-        // Si no hay otro modal activo, restaurar scroll del body
-        const activeModals = document.querySelectorAll('.modal.active');
-        if (activeModals.length === 0) {
-            document.body.style.overflow = 'auto';
-        }
-    }
+	const modal = document.getElementById('card-zoom-modal')
+	if (modal) {
+		modal.classList.remove('active')
 
-    if (zoomAtroposInstance) {
-        zoomAtroposInstance.destroy();
-        zoomAtroposInstance = null;
-    }
+		// Si no hay otro modal activo, restaurar scroll del body
+		const activeModals = document.querySelectorAll('.modal.active')
+		if (activeModals.length === 0) {
+			document.body.style.overflow = 'auto'
+		}
+	}
+
+	if (zoomAtroposInstance) {
+		zoomAtroposInstance.destroy()
+		zoomAtroposInstance = null
+	}
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    updateUI();
+	updateUI()
 
-    const modal = document.getElementById('card-zoom-modal');
+	const modal = document.getElementById('card-zoom-modal')
 
-    modal?.addEventListener('click', (e) => {
-        if (e.target === modal || e.target.classList.contains('card-zoom-backdrop')) {
-            closeCardZoomModal();
-        }
-    });
-});
+	modal?.addEventListener('click', e => {
+		if (e.target === modal || e.target.classList.contains('card-zoom-backdrop')) {
+			closeCardZoomModal()
+		}
+	})
+})

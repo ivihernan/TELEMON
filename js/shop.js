@@ -4,7 +4,7 @@ async function loadPacksCatalog() {
 	const loadingElement = document.getElementById('loading')
 
 	try {
-		const response = await fetch('/data/packs.json')
+		const response = await fetch('obtener_sobres.php')
 		if (!response.ok) {
 			throw new Error(`Error al cargar el catalogo de expansiones, ${response.status}`)
 		}
@@ -86,7 +86,7 @@ function buyPack(setId) {
 	}
 
 	player.money -= cost
-	currentPackCards = generatePackWithRarity(setObject.cards,5)
+	currentPackCards = generatePackWithRarity(setObject.cards, 5)
 	currentCardIndex = 0
 
 	player.inventory.push(...currentPackCards)
@@ -105,7 +105,6 @@ function buyPack(setId) {
 
 	document.getElementById('deck-reveal-area').style.display = 'none'
 	document.getElementById('summary-area').style.display = 'none'
-	
 
 	const modal = document.getElementById('opening-modal')
 	modal.classList.add('active')
@@ -130,7 +129,6 @@ function generatePackWithRarity(cards, packSize) {
 	for (let i = 0; i < packSize; i++) {
 		const roll = Math.random() * 100
 		let pool = budgetCards
-
 
 		//Cambio las probabilidades porqeu si no el usuario siempre gana
 		//El 10% lo bajo al 3 para que no salgan muchas cartas top

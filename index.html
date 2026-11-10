@@ -254,13 +254,13 @@
 		</footer>
 
 		<!-- Modal para crear cuenta -->
-		<div class="modal" id="form-modal">
+		<div class="modal" id="form-modal" style="display: none">
 			<div class="modal-content">
-				<button id="btn-close-register" class="close-btn" type="button"> &times;</button>
+				<button id="btn-close-register" class="close-btn" type="button">&times;</button>
 
 				<div class="modal-header">
 					<h2>Crear Cuenta</h2>
-					<p class="modal-subtitle">Inresa tus datos para registrarte</p>
+					<p class="modal-subtitle">Ingresa tus datos para registrarte</p>
 				</div>
 
 				<form class="crear_cuenta" id="crear_cuenta_form">
@@ -270,19 +270,20 @@
 					</div>
 
 					<div class="input-group">
-						<label for="email">Correo electronico</label>
+						<label for="email">Correo electrónico</label>
 						<input id="email" type="email" placeholder="nombre@ejemplo.com" required maxlength="100" />
 					</div>
 
 					<div class="input-group">
-						<label for="password">Password</label>
-						<input id="password" type="password" placerholder="********" required maxlength="255" />
+						<label for="password">Contraseña</label>
+						<input id="password" type="password" placeholder="********" required maxlength="255" />
 					</div>
+
 					<div class="input-group">
 						<label for="ciudad">Ciudad</label>
 						<div class="select-wrapper">
 							<select id="ciudad" required>
-								<option value="" disabled selected hidden>Selecciona una opcion</option>
+								<option value="" disabled selected hidden>Selecciona una opción</option>
 								<option value="Valladolid">Valladolid</option>
 								<option value="El bierzo">El bierzo</option>
 								<option value="Comuna 3">Comuna 3</option>
@@ -294,9 +295,10 @@
 					</div>
 
 					<div class="input-group">
-						<label for="fecha_nacimiento">Fecha de nacimiento: </label>
+						<label for="fecha_nacimiento">Fecha de nacimiento</label>
 						<input id="fecha_nacimiento" type="date" required />
 					</div>
+
 					<button type="submit" class="btn-submit">Crear Cuenta</button>
 				</form>
 			</div>

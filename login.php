@@ -1,40 +1,49 @@
-<?php 
-header("Content-Type: application/json; charset=UTF-8");
-require_once "conexion.php";
+<?php
+session_start();
+require_once("conexion.php");
 
-$input = file_get_contents("php://input");
-$datos = json_decode($input, true);
+$email = trim($_POST["email"] ?? '');
+$password = trim($_POST['password'] ?? '');
 
-if (!$datos || empty($datos['email']) || empty($datos['password'])) {
-    http_response_code(400);
-    echo json_encode(["status" => "error", "mensaje" => "Introduce el email y la contraseña."]);
-    exit();
+if (empty($email) || empty($password)) {
+  echo "<script>alert('Rellena todos los campos para iniciar sesion porfavor'); history.back();</script>";
+  exit();
 }
 
-try{
-  $sql = "SELECT id, nombre, email, password, ciudad, saldo FROM usuarios WHERE email = ?";
+//Hago la peticion que le voy a pedir a la base de daots
+$query = "SELECT id, nombre, email, password, saldo FROM usuarios WHERE email = ?";
+$stmt = mysqli_prepare($db, $query);
 
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$datos['email']]);
+if ($stmt) {
+  mysqli_stmt_bind_param($stmt, 's', $email);
+  mysqli_stmt_execute($stmt);
 
-  $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+  $resultado = mysqli_stmt_get_result($stmt);
+  if ($usuario = mysqli_fetch_assoc($resultado)) {
+    if (password_verify($password, $usuario['password'])) {
+      //Guardo la sesion como antes en registrar
+      $_SESSION['usuario'] = [
+        'id' => $usuario['id'],
+        'nombre' => $usuario['nombre'],
+        'email' => $usuario['email'],
+        'saldo' => $usuario['saldo']
+      ];
 
-  if($usuario && password_verify($datos['password'], $usuario['password'])){
-    //Quito la contra de los datos que me devuelve el servidor
-    unset($usuario['password']);
-
-    echo json_encode([
-      "status" => "ok",
-      "mensaje" => "Welcome again " . $usuario['nombre'] . "!!!!", //Con el punto concateno frases
-      "usuario" => $usuario
-    ]);
-  }else{
-    http_response_code(401);
-    echo json_encode(["status" => "error", "mensaje" => "Correo o contrase;as incorrectas, vuelva a intetarlo"]);
+      mysqli_stmt_close($stmt);
+      mysqli_close($db);
+      //header('Location: index.php');
+      echo "<script>
+            alert('Cuenta iniciada con exito. Ha gamblear como mas nos gusta!!');
+            window.location.href = 'index.php';
+          </script>
+    ";
+      exit();
+    } else {
+      echo "<script>alert('Algo no salio correctamente, pruebe otra vez'); history.back();</script>";
+    }
+  } else {
+    echo "<script>alert('Algo no salio correctamente, pruebe otra vez'); history.back();</script>l";
   }
-}catch(PDOException $e){
-  http_response_code(500);
-  echo json_encode(["status" => "error", "mensaje" => "Error en la base de datos: " . $e->getMessage()]);
+  mysqli_stmt_close($stmt);
 }
-
-?>
+mysqli_close($db);

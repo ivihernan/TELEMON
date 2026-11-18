@@ -1,7 +1,10 @@
 //Variables globales para el juego de cartas
 
+const initialMoneyEl = document.getElementById('player-money')
+const initialMoney = initialMoneyEl ? parseFloat(initialMoneyEl.textContent.replace('$', '').replace(/,/g, '')) : 0
+
 let player = {
-	money: 0.0,
+	money: initialMoney,
 	inventory: [],
 }
 
@@ -13,14 +16,6 @@ let currentInspectedCards = []
 let zoomAtroposInstance = null
 
 function updateUI() {
-	const usuarioGuardado = localStorage.getItem('usuario_telemon')
-
-	if (usuarioGuardado) {
-		const usuario = JSON.parse(usuarioGuardado)
-		player.money = parseFloat(usuario.saldo || 0)
-	} else {
-		player.money = 0.0
-	}
 	//Primero actualizo el dinero del jugador cuando compra
 	//Con el metodo toFixed(2) se asegura que siempre tenga dos decimales
 	const moneyElement = document.getElementById('player-money')

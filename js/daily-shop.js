@@ -1,65 +1,64 @@
 let dailyShopCards = []
 
-document.addEventListener("DOMContentLoaded",  () => {
-    //Primero quiero que carguen las expansiones y luego ya las cartas
-    setTimeout(() => {
-        generateDailyShop()
-        startDailyTimer()
-    }, 1000)
+document.addEventListener('DOMContentLoaded', () => {
+	//Primero quiero que carguen las expansiones y luego ya las cartas
+	setTimeout(() => {
+		generateDailyShop()
+		startDailyTimer()
+	}, 1000)
 
-    document.getElementById('reroll-shop-btn')?.addEventListener('click', rerollDailyShop)
+	document.getElementById('reroll-shop-btn')?.addEventListener('click', rerollDailyShop)
 })
-
 
 //Este codigo lo dejo para el principio del juego para que salgan cartas mas bartas
 function generateDailyShop() {
-    let allCards = []
-    allSetsData.forEach(s => {
-        if(s.cards) allCards = allCards.concat(s.cards)
-    })
+	let allCards = []
+	allSetsData.forEach(s => {
+		if (s.cards) allCards = allCards.concat(s.cards)
+	})
 
-    if (allCards.length === 0) return
+	if (allCards.length === 0) return
 
-    const poolLow = allCards.filter(c => (c.basePrice || 0) >= 0 && (c.basePrice || 0) <= 2)
-    const poolMid = allCards.filter(c => (c.basePrice || 0) > 2 && (c.basePrice || 0) <= 4)
-    const poolHigh = allCards.filter(c => (c.basePrice || 0) > 4)
+	const poolLow = allCards.filter(c => (c.basePrice || 0) >= 0 && (c.basePrice || 0) <= 2)
+	const poolMid = allCards.filter(c => (c.basePrice || 0) > 2 && (c.basePrice || 0) <= 4)
+	const poolHigh = allCards.filter(c => (c.basePrice || 0) > 4)
 
-    dailyShopCards = []
+	dailyShopCards = []
 
-    function pickRandomCards(pool, amount) {
-        const usedIndexes = new Set()
-        const limit = Math.min(amount, pool.length)
+	function pickRandomCards(pool, amount) {
+		const usedIndexes = new Set()
+		const limit = Math.min(amount, pool.length)
 
-        while (usedIndexes.size < limit) {
-            const index = Math.floor(Math.random() * pool.length)
-            if(!usedIndexes.has(index)){
-                usedIndexes.add(index)
+		while (usedIndexes.size < limit) {
+			const index = Math.floor(Math.random() * pool.length)
+			if (!usedIndexes.has(index)) {
+				usedIndexes.add(index)
 
-                const card = pool[index]
-                const hasDiscount = Math.random() < 0.64 
-                const discountPercent = hasDiscount ? [10, 15, 20, 25, 30, 40][Math.floor(Math.random() * 6)] : 0
+				const card = pool[index]
+				const hasDiscount = Math.random() < 0.64
+				const discountPercent = hasDiscount ? [10, 15, 20, 25, 30, 40][Math.floor(Math.random() * 6)] : 0
 
-                const originalPrice = card.basePrice || 0
-                const finalPrice = hasDiscount ? originalPrice * (1 - discountPercent / 100) : originalPrice
+				const originalPrice = card.basePrice || 0
+				const finalPrice = hasDiscount ? originalPrice * (1 - discountPercent / 100) : originalPrice
 
-                dailyShopCards.push({
-                    cardData: card,
-                    originalPrice: originalPrice,
-                    finalPrice: finalPrice,
-                    discountPercent: discountPercent,
-                    purchased: false,
-                })
-            }
-        }
-    }
+				dailyShopCards.push({
+					cardData: card,
+					originalPrice: originalPrice,
+					finalPrice: finalPrice,
+					discountPercent: discountPercent,
+					purchased: false,
+				})
+			}
+		}
+	}
 
-    pickRandomCards(poolLow, 16) 
-    pickRandomCards(poolMid, 6)  
-    pickRandomCards(poolHigh, 2) 
+	pickRandomCards(poolLow, 64)
+	pickRandomCards(poolMid, 32)
+	pickRandomCards(poolHigh, 8)
 
-    dailyShopCards.sort(() => Math.random() - 0.5)
+	dailyShopCards.sort(() => Math.random() - 0.5)
 
-    renderDailyShop()
+	renderDailyShop()
 }
 
 //En este ya salen cosas mucho mas caras
@@ -71,7 +70,7 @@ function generateDailyShop() {
 
 //     if (allCards.length === 0) return
 
-//     //Quiero que las cartas salgan de un rango medio 
+//     //Quiero que las cartas salgan de un rango medio
 //     const priorityCards = allCards.filter(c => (c.basePrice || 0) >= 12 && (c.basePrice || 0) <= 45)
 //     const pool = priorityCards.length >= 12 ? priorityCards : allCards
 
@@ -105,20 +104,19 @@ function generateDailyShop() {
 // }
 
 function renderDailyShop() {
-    const container = document.getElementById('daily-cards-grid')
-    if(!container) return
+	const container = document.getElementById('daily-cards-grid')
+	if (!container) return
 
-    container.innerHTML = ''
+	container.innerHTML = ''
 
-    dailyShopCards.forEach((item, index) => {
-        const card = item.cardData
-        const cardItem = document.createElement('div')
-        cardItem.className = 'set-card-item'
+	dailyShopCards.forEach((item, index) => {
+		const card = item.cardData
+		const cardItem = document.createElement('div')
+		cardItem.className = 'set-card-item'
 
-        const discountBadge = item.discountPercent > 0 ? `<div class="discount-badge">- ${item.discountPercent}%</div>` : ''
+		const discountBadge = item.discountPercent > 0 ? `<div class="discount-badge">- ${item.discountPercent}%</div>` : ''
 
-
-        const priceInsideHTML =
+		const priceInsideHTML =
 			item.discountPercent > 0
 				? `<div class="card-price-overlay">
                         <span class="old-price-inside">$${item.originalPrice.toFixed(2)}</span>
@@ -146,72 +144,75 @@ function renderDailyShop() {
         </button>
         `
 
-        const buyButton = cardItem.querySelector('.buy-card-btn')
-        buyButton.addEventListener('click', e => {
-            e.stopPropagation()
-            buyDailyCard(item)
-        })
+		const buyButton = cardItem.querySelector('.buy-card-btn')
+		buyButton.addEventListener('click', e => {
+			e.stopPropagation()
+			buyDailyCard(item)
+		})
 
-        cardItem.addEventListener('click', () => openCardZoomModal(card))
+		cardItem.addEventListener('click', () => openCardZoomModal(card))
 
-        container.appendChild(cardItem)
+		container.appendChild(cardItem)
 
-        Atropos({
+		Atropos({
 			el: `.daily-shop-atropos-${index}`,
 			activeOffset: 20,
 			shadow: false,
 			glare: true,
 			maxGlare: 0.4,
 		})
-    })
+	})
 }
 
 function buyDailyCard(item) {
-    if(player.money < item.finalPrice) {
-        alert("No puedes comprar esta carta, no tienes suficiente dinero.")
-        return
-    }
+	if (player.money < item.finalPrice) {
+		alert('No puedes comprar esta carta, no tienes suficiente dinero.')
+		return
+	}
 
-    player.money -= item.finalPrice
-    player.inventory.push(item.cardData)
-    item.purchased = true
+	player.money -= item.finalPrice
+	player.inventory.push(item.cardData)
+	item.purchased = true
 
-    updateUI()
-    renderDailyShop()
+	updateUI()
+	renderDailyShop()
 }
 
-function rerollDailyShop(){
-    const REROLL_COST = 5.0
-    if(player.money < REROLL_COST){
-        alert("No puedes rerollear la tienda, no tienes suficiente dinero.")
-        return
-    }
+function rerollDailyShop() {
+	const REROLL_COST = 5.0
+	if (player.money < REROLL_COST) {
+		alert('No puedes rerollear la tienda, no tienes suficiente dinero.')
+		return
+	}
 
-    if(confirm('Quieres pagar $5.00 para rerollear las ofertas?')){
-        player.money -= REROLL_COST
-        updateUI()
-        generateDailyShop()
-    }
+	if (confirm('Quieres pagar $5.00 para rerollear las ofertas?')) {
+		player.money -= REROLL_COST
+		updateUI()
+		generateDailyShop()
+	}
 }
 
 function startDailyTimer() {
-    const timerElement = document.getElementById('daily-timer')
-    if(!timerElement) return
+	const timerElement = document.getElementById('daily-timer')
+	if (!timerElement) return
 
-    let secondsLeft = 24 * 60 * 60
+	let secondsLeft = 24 * 60 * 60
 
-    setInterval(() => {
-        secondsLeft--
-        if(secondsLeft <= 0) {
-            secondsLeft = 24 * 60 * 60
-            generateDailyShop()
-        }
+	setInterval(() => {
+		secondsLeft--
+		if (secondsLeft <= 0) {
+			secondsLeft = 24 * 60 * 60
+			generateDailyShop()
+		}
 
-        const hours = Math.floor(secondsLeft / 3600).toString().padStart(2, '0')
-        const minutes = Math.floor((secondsLeft % 3600) / 60).toString().padStart(2, '0')
-        const seconds = (secondsLeft % 60).toString().padStart(2, '0')
+		const hours = Math.floor(secondsLeft / 3600)
+			.toString()
+			.padStart(2, '0')
+		const minutes = Math.floor((secondsLeft % 3600) / 60)
+			.toString()
+			.padStart(2, '0')
+		const seconds = (secondsLeft % 60).toString().padStart(2, '0')
 
-        timerElement.textContent = `${hours}:${minutes}:${seconds}`
-        
-    },1000)
+		timerElement.textContent = `${hours}:${minutes}:${seconds}`
+	}, 1000)
 }

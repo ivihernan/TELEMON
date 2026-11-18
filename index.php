@@ -1,0 +1,532 @@
+<?php
+session_start();
+require_once("conexion.php");
+
+if (isset($_SESSION["usuario"]["id"])) {
+  $id = $_SESSION["usuario"]["id"];
+  $stmt_saldo = mysqli_prepare($db, "SELECT saldo FROM usuarios where id = ?");
+
+  mysqli_stmt_bind_param($stmt_saldo, "d", $id);
+  mysqli_stmt_execute($stmt_saldo);
+
+  $res_saldo = mysqli_stmt_get_result($stmt_saldo);
+
+  if ($fila = mysqli_fetch_assoc($res_saldo)) {
+    $_SESSION["usuario"]["saldo"] = $fila["saldo"];
+  }
+
+  mysqli_stmt_close($stmt_saldo);
+}
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Cosas para el SEO -->
+  <meta name="description" content="Simulador para apertura de sobres pokemon con un mercado para vender las cartas conseguidas. Compra, vende y colecciona" />
+  <meta name="keywords" content="apertura de sobres, coleccion de cartas pokemon, mercado de cartas pokemon, simulador tcg, telemon, pokemon" />
+
+  <!-- Open graph -->
+  <meta property="og:title" content="TELEMON" />
+  <meta property="og:description" content="Únete a la mejor experiencia virtual: apertura de sobres, colección y mercado de cartas Pokémon." />
+
+  <title>TELEMON</title>
+  <link rel="icon" href="img/icono.jpg" type="image/x-icon" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/atropos@2/atropos.css" />
+
+  <link rel="stylesheet" href="styles/index.css" />
+  <link rel="stylesheet" href="styles/shop.css" />
+  <link rel="stylesheet" href="styles/pack-opening.css" />
+  <link rel="stylesheet" href="styles/atropos.css" />
+  <link rel="stylesheet" href="styles/album.css" />
+  <link rel="stylesheet" href="styles/daily-shop.css" />
+  <link rel="stylesheet" href="styles/collection.css" />
+  <link rel="stylesheet" href="styles/market.css" />
+  <link rel="stylesheet" href="styles/upgrade.css" />
+  <link rel="stylesheet" href="styles/buyMoney.css" />
+  <link rel="stylesheet" href="styles/logins.css" />
+</head>
+
+<body>
+  <nav class="main-nav">
+    <div class="container-nav">
+      <img class="banner" src="img/telemon_2.png" />
+      <button id="hamburger-btn" class="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div id="nav-menu" class="container-btn">
+        <button class="nav-btn active" data-tab="shop-section">Tienda</button>
+        <button class="nav-btn" data-tab="collection-section">Coleccion</button>
+        <button class="nav-btn" data-tab="market-section">Mercado</button>
+        <button class="nav-btn" data-tab="upgrade-section">Upgrade</button>
+      </div>
+    </div>
+    <div class="player">
+      <!-- <div id="guest-actions" class="guest-actions">
+        <button type="button" id="btn-open-register" class="btn-open-register">Crear Cuenta</button>
+        <button type="button" id="btn-open-login" class="btn-open-login">Iniciar Sesion</button>
+      </div>
+      <div class="player-stats" id="user-stats" style="display: none">
+        <div class="player-inventory">
+          <img src="img/cards.png" />
+          <div class="container-money">
+            <p id="collection-value">$0.00</p>
+            <p class="player-inventory-value">Inventario </p>
+          </div>
+        </div>
+        <div class="player-saldo">
+          <img src="img/pocket.png" id="open-modal-pocket" />
+          <div class="container-pocket">
+            <p id="player-money">$100.00</p>
+            <p class="saldo-texto">Saldo en la cartera</p>
+          </div>
+        </div>
+        <p id="player-name">Invitado</p>
+        <button id="btn-logout" class="btn-logout" type="button" title="Cerrar Sesion">🚪</button>
+      </div> -->
+      <?php if (isset($_SESSION['usuario'])): ?>
+        <div class="player-stats" id="user-stats">
+          <div class="player-inventory">
+            <img src="img/cards.png" />
+            <div class="container-money">
+              <p id="collection-value">$0.00</p>
+              <p class="player-inventory-value">Inventario</p>
+            </div>
+          </div>
+          <div class="player-saldo">
+            <img src="img/pocket.png" id="open-modal-pocket" />
+            <div class="container-pocket">
+              <p id="player-money">$<?php echo number_format($_SESSION['usuario']['saldo'], 2); ?></p>
+              <p class="saldo-texto">Saldo en la cartera</p>
+            </div>
+          </div>
+          <p id="player-name"><?php echo htmlspecialchars($_SESSION['usuario']['nombre']); ?></p>
+          <button type="button" id="btn-open-cart" class="btn-cart" title="Ver Carrito" style="position: relative; background: none; border: none; font-size: 1.4rem; cursor: pointer;">
+            🛒
+            <span id="cart-count" style="position: absolute; top: -6px; right: -8px; background: #e74c3c; color: white; font-size: 0.75rem; font-weight: bold; padding: 2px 6px; border-radius: 50%;">0</span>
+          </button>
+          <a href="logout.php" class="btn-logout" title="Cerrar Sesion">🚪</a>
+        </div>
+        <?php else: ?>=
+        <div id="guest-actions" class="guest-actions">
+          <button type="button" id="btn-open-register" class="btn-open-register">Crear Cuenta</button>
+          <button type="button" id="btn-open-login" class="btn-open-login">Iniciar Sesion</button>
+        </div>
+      <?php endif; ?>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Menu para comprar cartas y sobres -->
+    <section class="tab-content active" id="shop-section">
+      <h3>Tienda Diaria</h3>
+      <div class="daily-shop-container">
+        <div class="daily-shop-header">
+          <div>
+            <h3>Ofertas del dia</h3>
+            <!-- <p> Cartas exclusivas</p> -->
+          </div>
+          <div class="daily-shop-timer">
+            <span>Proximo refresco en: <strong id="daily-timer">23:59:59</strong></span>
+            <button id="reroll-shop-btn" class="reroll-shop-btn">Refrescar tienda ($5.00)</button>
+          </div>
+        </div>
+
+        <div id="daily-cards-grid" class="set-cards-grid"></div>
+      </div>
+
+      <!-- Lo tengo que quitar para la parte del backend -->
+      <!-- <h3>★ Compra de sobres</h3>
+      <div id="loading" class="loading-spinner"> Cargando catalogo de cartas... </div>
+      <div id="packs-container" class="packs-grid"></div> -->
+
+      <!-- Menu de cartas diarias -->
+      <div> </div>
+    </section>
+
+    <section class="tab-content" id="collection-section">
+      <h2> MI COLECCION</h2>
+      <div class="collection-container" id="collection-container"></div>
+    </section>
+
+    <section class="tab-content" id="market-section">
+      <h2>Mercado</h2>
+      <p class="market-desc">Vende tus articulos a compradores locales pero ojo, cada uno tiene su presupuesto y sus gustos</p>
+      <div id="buyers-container" class="buyer-grid"></div>
+
+      <!-- Modal de Negociación -->
+      <div id="negotiation-modal" class="modal-market hidden">
+        <div class="modal-content">
+          <button id="close-modal" class="close-btn">&times;</button>
+
+          <div class="modal-header">
+            <img id="modal-buyer-img" src="" alt="Comprador" />
+            <div class="modal-buyer-info">
+              <h3 id="modal-buyer-name">Nombre</h3>
+              <p id="modal-buyer-personality" class="buyer-personality-tag">Personalidad</p>
+              <p id="modal-buyer-budget">Presupuesto: $0.00</p>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="inventory-section">
+              <h4>Tus cartas (Haz clic para añadir a la oferta)</h4>
+              <div id="modal-inventory-grid" class="cards-grid"> </div>
+            </div>
+
+            <div class="negotiation-panel">
+              <div class="offer-summary">
+                <p>Valor real (Mercado): $<span id="market-value-display">0.00</span></p>
+                <p class="manual-offer-container">
+                  Tu oferta: $
+                  <input type="number" id="manual-offer-input" class="offer-input" value="0.00" min="0" step="0.01" />
+                </p>
+              </div>
+
+              <div class="price-controls">
+                <button class="price-btn" data-mod="-0.20">-20%</button>
+                <button class="price-btn" data-mod="-0.10">-10%</button>
+                <button class="price-btn" data-mod="0">Mercado</button>
+                <button class="price-btn" data-mod="0.10">+10%</button>
+                <button class="price-btn" data-mod="0.20">+20%</button>
+              </div>
+
+              <div class="probability-container">
+                <p>Probabilidad de venta: <span id="prob-text">0%</span></p>
+                <div class="prob-bar-bg">
+                  <div id="prob-bar-fill" class="prob-bar-fill"></div>
+                </div>
+              </div>
+
+              <button id="btn-make-offer" class="offer-btn" disabled>Hacer Oferta</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab-content" id="upgrade-section">
+      <h2>Upgrades</h2>
+      <div class="upgrade-header">
+        <div class="upgrade-nav-menu">
+          <button class="upg-nav-btn active" data-game="swipe-game">Swipe 50/50</button>
+          <button class="upg-nav-btn" data-game="contrato-game">Contrato</button>
+        </div>
+      </div>
+
+      <div id="swipe-game" class="upgrade-minigame active">
+        <div class="swipe-controls">
+          <div class="risk-slider-container">
+            <label>RIESGO: <span id="risk-level-text">Bajo</span></label>
+            <input type="range" id="swipe-risk-slider" min="1" max="10" value="2" />
+            <div class="risk-labels">
+              <span style="color: #54b26e">Seguro</span>
+              <span style="color: #e74c3c">Extremo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="upg-layout swipe-layout">
+          <div class="swipe-side loser-side">
+            <h4>SI PIERDES...</h4>
+            <div class="swipe-ghost-card" id="swipe-lose-ghost">
+              <p>$<span id="swipe-lose-val">0.00</span></p>
+            </div>
+          </div>
+
+          <div class="swipe-center">
+            <div class="upg-card-slot" id="swipe-input-slot" onclick="openUpgInventory('swipe-input')">
+              <span class="plus-icon">+</span>
+              <p>Añade tu carta</p>
+            </div>
+            <button class="upg-action-btn" id="btn-play-swipe" disabled>SWIPE (JUGAR)</button>
+          </div>
+
+          <div class="swipe-side winner-side">
+            <h4>SI GANAS...</h4>
+            <div class="swipe-ghost-card" id="swipe-win-ghost">
+              <p>$<span id="swipe-win-val">0.00</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="contrato-game" class="upgrade-minigame hidden">
+        <div class="contrato-header">
+          <p>Sacrifica 5 cartas distintas de tu inventario. Obtendrás 1 carta nueva garantizada del catálogo general, con posibilidades de que sea de un valor extremo.</p>
+        </div>
+        <div class="contrato-slots" id="contrato-slots-container"> </div>
+        <div class="contrato-footer">
+          <p>Valor total sacrificado: $<span id="contrato-total-val">0.00</span></p>
+          <button class="upg-action-btn" id="btn-play-contrato" disabled>FUSIONAR CARTAS</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal para seleccionar cartas con Atropos -->
+    <div id="upg-selector-modal" class="modal-market hidden">
+      <div class="modal-content">
+        <button id="close-upg-modal" class="close-btn">&times;</button>
+        <h3 id="upg-modal-title">Selecciona una carta</h3>
+        <div class="cards-grid" id="upg-modal-grid"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer">
+      <p>©️ 2029 Telemon. Todos los derechos reservados</p>
+      <p> Este sitio está protegido por nuestra seguridad personal </p>
+      <div class="dratini-container">
+        <img src="img/dratini1.png" alt="dratini" class="dratini" title="Dratini quiere aprobar IAW" />
+        <img src="img/dratini2.png" alt="dratini2" class="dratini" title="Dragonair dice que le gusta SQL" />
+        <img src="img/dratini3.png" alt="dratini3" class="dratini" title="Dragonite le gusta mucho programar" />
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal del carrito -->
+  <div class="modal" id="cart-modal" style="display: none">
+    <div class="modal-content">
+      <button id="btn-close-cart" class="close-btn" type="button">&times;</button>
+
+      <div class="modal-header">
+        <h2>Tu Carrito</h2>
+        <p class="modal-subtitle">Cartas seleccionadas para comprar</p>
+      </div>
+
+      <div id="cart-items-container">
+        <p>Tu carrito está vacío.</p>
+      </div>
+
+      <div>
+        <p>Total: $<span id="cart-total-price">0.00</span></p>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" id="btn-clear-cart" style="background: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer;">Vaciar</button>
+          <button type="button" id="btn-checkout-cart" class="btn-submit" style="margin: 0; width: auto; padding: 10px 20px;">Comprar Todo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para crear cuenta -->
+  <div class="modal" id="form-modal" style="display: none">
+    <div class="modal-content">
+      <button id="btn-close-register" class="close-btn" type="button">&times;</button>
+
+      <div class="modal-header">
+        <h2>Crear Cuenta</h2>
+        <p class="modal-subtitle">Ingresa tus datos para registrarte</p>
+      </div>
+
+      <form class="crear_cuenta" id="crear_cuenta_form" method="POST" action="registrar_usuario.php">
+        <div class="input-group">
+          <label for="username">Nombre de usuario</label>
+          <input id="username" type="text" placeholder="Ej. AmeliGoat" maxlength="100" name="username" required />
+        </div>
+
+        <div class="input-group">
+          <label for="email">Correo electrónico</label>
+          <input id="email" type="email" placeholder="nombre@ejemplo.com" required name="email" maxlength="100" />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input id="password" type="password" placeholder="********" name="password" required maxlength="255" />
+        </div>
+
+        <div class="input-group">
+          <label for="ciudad">Ciudad</label>
+          <div class="select-wrapper">
+            <select id="ciudad" name="ciudad" required>
+              <option value="" disabled selected hidden>Selecciona una opción</option>
+              <option value="Valladolid">Valladolid</option>
+              <option value="El bierzo">El bierzo</option>
+              <option value="Comuna 3">Comuna 3</option>
+              <option value="Ferxxo">Ferxxo</option>
+              <option value="Feid">Feid</option>
+              <option value="Segovia">Segovia</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="fecha_nacimiento">Fecha de nacimiento</label>
+          <input id="fecha_nacimiento" type="date" name="fecha_nacimiento" required />
+          <!-- <input id="fecha_nacimiento" type="text" name="fecha_nacimiento" required /> -->
+        </div>
+
+        <button type="submit" class="btn-submit">Crear Cuenta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Iniciar Sesión -->
+  <div class="modal" id="login-modal">
+    <div class="modal-content">
+      <button id="btn-cerrar-login" class="close-btn" type="button">&times;</button>
+      <div class="modal-header">
+        <h2>Iniciar Sesion</h2>
+      </div>
+      <form id="iniciar_sesion_form" class="iniciar_sesion" method="POST" action="login.php">
+        <div class="input-group">
+          <label for="login_email">Correo electronico</label>
+          <input id="login_email" type="email" placeholder="nombre@ejemplo.com" name="email" required />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input id="login_password" type="password" name="password" placeholder="********" required />
+        </div>
+        <button type="submit" class="btn-submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aqui va el modal para el pack opening -->
+  <div id="opening-modal" class="modal">
+    <div class="modal-content">
+      <button id="close-modal-btn" class="close-btn">&times;</button>
+      <h2 id="modal-title">Abriendo Sobre...</h2>
+
+      <div id="opening-table" class="opening-table">
+        <div id="pack-wrapper" class="pack-wrapper">
+          <div id="pack-body" class="pack-body">
+            <img id="modal-pack-img" src="" alt="Sobre Pokémon" />
+            <button id="open-pack-btn" class="open-btn">¡ABRIR SOBRE!</button>
+          </div>
+        </div>
+
+        <div id="deck-reveal-area" class="deck-reveal-area" style="display: none">
+          <p class="click-hint">Haz clic en la carta para revelarla (<span id="cards-left-count">5</span> restantes)</p>
+          <div id="single-card-slot" class="single-card-slot"></div>
+        </div>
+
+        <div id="summary-area" class="summary-area" style="display: none">
+          <h3>¡Sobre Abierto!</h3>
+          <div id="cards-container" class="cards-reveal-grid"></div>
+          <div class="total-value-badge">Valor Total del Sobre: <strong id="pack-total-value">$0.00</strong> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver el album de cada coleccion -->
+  <div id="view-set-modal" class="modal">
+    <div class="modal-content modal-album">
+      <button id="close-set-modal-btn" class="close-btn">&times;</button>
+      <h2 id="album-modal-title">Expansion</h2>
+      <p id="album-modal-subtitle">Filtrar</p>
+      <!-- Aqui meto todos los filtros que quiera poner -->
+      <div class="album-filters">
+        <select id="filter-type">
+          <option value="all">Todos los Tipos</option>
+          <option value="Fuego">Fuego</option>
+          <option value="Agua">Agua</option>
+          <option value="Planta">Planta</option>
+          <option value="Eléctrico">Eléctrico</option>
+          <option value="Psíquico">Psíquico</option>
+          <option value="Lucha">Lucha</option>
+          <option value="Oscuro">Oscuro</option>
+          <option value="Metal">Metal</option>
+          <option value="Dragón">Dragón</option>
+          <option value="Incoloro">Incoloro</option>
+        </select>
+        <div class="price-range-group">
+          <input type="number" id="filter-min-price" placeholder="Min $" min="0" step="0.5" />
+          <span>-</span>
+          <input type="number" id="filter-max-price" placeholder="Max $" min="0" step="0.5" />
+        </div>
+      </div>
+      <div id="set-cards-grid" class="set-cards-grid"></div>
+    </div>
+  </div>
+
+  <!-- Modal para ver la carta solo con atropos -->
+  <div id="card-zoom-modal" class="modal card-zoom-modal">
+    <div class="card-zoom-content">
+      <div class="atropos card-zoom-atropos">
+        <div class="atropos-scale">
+          <div class="atropos-rotate">
+            <div class="atropos-inner">
+              <img id="zoom-card-img" src="" alt="Carta Pokémon" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para meter mas dinero -->
+  <div class="modal hidden" id="buy-money">
+    <div class="modal-content">
+      <button id="close-buy-money" class="close-btn">&times;</button>
+      <h2>Ingresar Dinero</h2>
+
+      <div class="buy-money-container">
+        <div class="payment-methods">
+          <button class="payment-btn active" data-target="crypto-form">Criptomonedas</button>
+          <button class="payment-btn" data-target="paypal-form">PayPal</button>
+          <button class="payment-btn" data-target="robux-form">Robux</button>
+        </div>
+
+        <div class="payment-forms">
+          <!-- Criptomonedas -->
+          <div class="payment-section active" id="crypto-form">
+            <h3>Pagar con Criptomonedas</h3>
+            <select id="crypto-type">
+              <option value="btc">Bitcoin (BTC)</option>
+              <option value="eth">Ethereum (ETH)</option>
+              <option value="usdt">Tether (USDT)</option>
+              <option value="usdt">XRP (Ripple)</option>
+              <option value="usdt">Cardano (ADA)</option>
+              <option value="usdt">Dogecoin(DOGE)</option>
+            </select>
+            <input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100" />
+            <button class="btn-confirm-payment">Ingresar Fondos</button>
+          </div>
+
+          <!-- PayPal -->
+          <div class="payment-section hidden" id="paypal-form">
+            <h3>Pagar con PayPal</h3>
+            <input type="email" placeholder="Correo electrónico de PayPal" />
+            <input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100" />
+            <button class="btn-confirm-payment">Ingresar Fondos</button>
+          </div>
+
+          <!-- Robux -->
+          <div class="payment-section hidden" id="robux-form">
+            <h3>Pagar con Robux</h3>
+            <input type="text" placeholder="Usuario de Roblox" />
+            <input type="number" class="amount-input" placeholder="Cantidad ($1 - $100)" min="1" max="100" />
+            <button class="btn-confirm-payment">Ingresar Fondos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script>
+
+  <script src="js/index.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/pack-opening.js"></script>
+  <script src="js/album.js"></script>
+  <script src="js/navegacion.js"></script>
+  <script src="js/collection.js"></script>
+  <script src="js/daily-shop.js"></script>
+  <script src="js/market.js"></script>
+  <script src="js/upgrade.js"></script>
+  <script src="js/buyMoney.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/crear-cuenta.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+
+</html>

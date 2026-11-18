@@ -5,7 +5,7 @@ const initialMoney = initialMoneyEl ? parseFloat(initialMoneyEl.textContent.repl
 
 let player = {
 	money: initialMoney,
-	inventory: [],
+	inventory: typeof INITIAL_INVENTORY !== 'undefined' ? INITIAL_INVENTORY : [],
 }
 
 let allSetsData = []

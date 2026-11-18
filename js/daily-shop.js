@@ -146,8 +146,8 @@ function renderDailyShop() {
 
 		const buyButton = cardItem.querySelector('.buy-card-btn')
 		buyButton.addEventListener('click', e => {
-			e.stopPropagation()
 			buyDailyCard(item)
+			e.stopPropagation()
 		})
 
 		cardItem.addEventListener('click', () => openCardZoomModal(card))
@@ -165,17 +165,25 @@ function renderDailyShop() {
 }
 
 function buyDailyCard(item) {
-	if (player.money < item.finalPrice) {
-		alert('No puedes comprar esta carta, no tienes suficiente dinero.')
-		return
+	// if (player.money < item.finalPrice) {
+	// 	alert('No puedes comprar esta carta, no tienes suficiente dinero.')
+	// 	return
+	// }
+
+	// player.money -= item.finalPrice
+	// player.inventory.push(item.cardData)
+	// item.purchased = true
+
+	// updateUI()
+	// renderDailyShop()
+	console.log('Comprando carta:', item.cardData.name, 'por $' + item.finalPrice.toFixed(2))
+
+	const cartaParaCarrito = {
+		...item.cardData,
+		discountedPrice: item.finalPrice,
 	}
 
-	player.money -= item.finalPrice
-	player.inventory.push(item.cardData)
-	item.purchased = true
-
-	updateUI()
-	renderDailyShop()
+	agregarAlCarrito(cartaParaCarrito, true)
 }
 
 function rerollDailyShop() {

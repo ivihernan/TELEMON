@@ -2,6 +2,8 @@
 session_start();
 require_once("conexion.php");
 
+$inventarioUsuario = [];
+
 if (isset($_SESSION["usuario"]["id"])) {
   $id = $_SESSION["usuario"]["id"];
   $stmt_saldo = mysqli_prepare($db, "SELECT saldo FROM usuarios where id = ?");
@@ -14,8 +16,32 @@ if (isset($_SESSION["usuario"]["id"])) {
   if ($fila = mysqli_fetch_assoc($res_saldo)) {
     $_SESSION["usuario"]["saldo"] = $fila["saldo"];
   }
-
   mysqli_stmt_close($stmt_saldo);
+
+  //Cartas del inventario
+  $sql_inv = "SELECT c.id, c.nombre AS name, c.rareza AS rarity, c.precio_base AS basePrice, c.imagen_url AS image, c.tipo AS type, i.cantidad 
+              FROM inventario i 
+              INNER JOIN cartas c ON i.carta_id = c.id 
+              WHERE i.usuario_id = ?";
+  $stmt_inv = mysqli_prepare($db, $sql_inv);
+
+  if ($stmt_inv) {
+    mysqli_stmt_bind_param($stmt_inv, "i", $id);
+    mysqli_stmt_execute($stmt_inv);
+    $res_inv = mysqli_stmt_get_result($stmt_inv);
+
+    while ($carta = mysqli_fetch_assoc($res_inv)) {
+      $carta["basePrice"] = floatval($carta["basePrice"]);
+      $cantidad = intval($carta["cantidad"]);
+      unset($carta["cantidad"]);
+
+      // Añadimos tantas copias como cantidad tenga el usuario
+      for ($k = 0; $k < $cantidad; $k++) {
+        $inventarioUsuario[] = $carta;
+      }
+    }
+    mysqli_stmt_close($stmt_inv);
+  }
 }
 ?>
 
@@ -326,7 +352,7 @@ if (isset($_SESSION["usuario"]["id"])) {
         <p class="modal-subtitle">Ingresa tus datos para registrarte</p>
       </div>
 
-      <form class="crear_cuenta" id="crear_cuenta_form" method="POST" action="registrar_usuario.php">
+      <form class="crear_cuenta" id="crear_cuenta_form" method="POST" action="registrar.php">
         <div class="input-group">
           <label for="username">Nombre de usuario</label>
           <input id="username" type="text" placeholder="Ej. AmeliGoat" maxlength="100" name="username" required />
@@ -513,6 +539,10 @@ if (isset($_SESSION["usuario"]["id"])) {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/atropos@2/atropos.min.js"></script>
+
+  <script>
+    const INITIAL_INVENTORY = <?php echo json_encode($inventarioUsuario); ?>;
+  </script>
 
   <script src="js/index.js"></script>
   <script src="js/shop.js"></script>
